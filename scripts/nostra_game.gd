@@ -5,4 +5,5 @@ func start_nostra(npc_name: String):
 	$MarginContainer/Enemy_Label.text = "You play against: " + npc_name
 
 func _on_button_pressed() -> void:
+	Main.switch_scene("overworld")
 	queue_free()

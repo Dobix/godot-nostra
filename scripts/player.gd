@@ -7,5 +7,8 @@ func get_input():
 	velocity = input_direction * speed
 
 func _physics_process(delta):
-	get_input()
-	move_and_slide()
+	if not Main.nostra_active:
+		get_input()
+		move_and_slide()
+	else:
+		velocity = Vector2.ZERO

@@ -6,3 +6,4 @@ res://scenes/nostra/nostra_game.tscn
 res://scripts/nostra_game.gd
 res://scripts/main.gd
 res://scripts/npc.gd
+res://scripts/player.gd
