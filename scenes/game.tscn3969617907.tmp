@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://byr2bhwtmxx3h"]
+
+[ext_resource type="PackedScene" uid="uid://phvf8xnumi3q" path="res://scenes/overworld/overworld.tscn" id="1_jx3ei"]
+[ext_resource type="Script" uid="uid://b8ogmx0n2pdjb" path="res://scenes/game.gd" id="1_xfuu6"]
+[ext_resource type="PackedScene" uid="uid://db0lnxfe8pva1" path="res://scenes/nostra/nostra_game.tscn" id="4_cfxbr"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_xfuu6")
+
+[node name="SceneContainer" type="Node2D" parent="."]
+
+[node name="Overworld" parent="SceneContainer" instance=ExtResource("1_jx3ei")]
+
+[node name="OverlayContainer" type="Node2D" parent="."]
+
+[node name="Nostra_game" parent="OverlayContainer" instance=ExtResource("4_cfxbr")]

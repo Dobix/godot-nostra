@@ -1,0 +1,14 @@
+ColorRect
+Label
+Button
+MarginContainer
+CanvasLayer
+CanvasModulate
+Node
+Control
+Node2D
+Camera2D
+CollisionShape2D
+AnimatedSprite2D
+Area2D
+CharacterBody2D

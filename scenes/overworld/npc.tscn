@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://1al2epsmnxfj"]
+
+[ext_resource type="Script" uid="uid://dbg65gbskpjg2" path="res://scripts/npc.gd" id="1_hqjbo"]
+[ext_resource type="Texture2D" uid="uid://djrik32vdoquq" path="res://assets/pt_npc_blue.png" id="1_sg6hi"]
+[ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_lmlo6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmlo6"]
+atlas = ExtResource("1_sg6hi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqjbo"]
+atlas = ExtResource("1_sg6hi")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j5xyk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmlo6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqjbo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mf1nl"]
+radius = 43.0116
+
+[node name="NPC" type="Area2D"]
+script = ExtResource("1_hqjbo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(3.8147e-06, 3.8147e-06)
+scale = Vector2(3.59375, 3.59375)
+sprite_frames = SubResource("SpriteFrames_j5xyk")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mf1nl")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -21.0
+offset_top = -39.0
+offset_right = 71.0
+offset_bottom = -16.0
+theme_override_fonts/font = ExtResource("2_lmlo6")
+theme_override_font_sizes/font_size = 8
+text = "Press E"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
