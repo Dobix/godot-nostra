@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var deck_manager = preload("res://scripts/deck_manager.gd").new()
+@onready var hand: ColorRect = $MarginContainer/Hand
 
 var player_deck: Array[CardData] = []
 var npc_deck: Array[CardData] = []
@@ -22,21 +23,28 @@ func start_nostra(npc_name: String):
 	npc_hand = deck_manager.draw_cards_from_deck(npc_deck, 3)
 	
 	# Debug check
-	print("Spielerdeck:")
-	for card in player_deck:
-		print(" - ", card.name+" ", card.color)
+	#print("Spielerdeck:")
+	#for card in player_deck:
+		#print(" - ", card.name+" ", card.color)
+#
+	#print("Gegnerdeck:")
+	#for card in npc_deck:
+		#print(" - ", card.name+" ", card.color)
+	#
+	#print("Player Hand:")
+	#for c in player_hand:
+		#print(c.name+" ", c.color)
+#
+	#print("NPC Hand:")
+	#for c in npc_hand:
+		#print(c.name+" ", c.color)
 
-	print("Gegnerdeck:")
-	for card in npc_deck:
-		print(" - ", card.name+" ", card.color)
-	
-	print("Player Hand:")
-	for c in player_hand:
-		print(c.name+" ", c.color)
+func _on_button_draw_card_pressed() -> void:
+	hand.draw_card()
 
-	print("NPC Hand:")
-	for c in npc_hand:
-		print(c.name+" ", c.color)
+func _on_button_discard_card_pressed() -> void:
+	hand.discard_card()
+
 
 func _on_button_pressed() -> void:
 	Main.switch_scene("overworld")

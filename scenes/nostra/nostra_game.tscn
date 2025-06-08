@@ -1,8 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://cundixctlwxji"]
+[gd_scene load_steps=7 format=3 uid="uid://cundixctlwxji"]
 
 [ext_resource type="FontFile" uid="uid://neu5rnvmfq5t" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_8dttg"]
 [ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://scripts/nostra_game.gd" id="1_ddfj3"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_ddfj3"]
+[ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://scripts/hand.gd" id="4_a0bb1"]
+
+[sub_resource type="Curve" id="Curve_a0bb1"]
+_data = [Vector2(0, 0), 0.0, 6.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_gk84w"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, -1), 0.0, 6.0, 0, 0, Vector2(0.5, 1.49012e-08), 0.0, 0.0, 0, 0, Vector2(1, 1), 6.0, 0.0, 0, 0]
+point_count = 3
 
 [node name="Nostra_Game" type="CanvasLayer"]
 script = ExtResource("1_ddfj3")
@@ -14,11 +24,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+[node name="ColorRect_Background" type="ColorRect" parent="MarginContainer"]
 layout_mode = 2
 color = Color(0.353308, 0.2695, 0.395739, 1)
 
-[node name="Heading" type="Label" parent="MarginContainer"]
+[node name="Heading_Label" type="Label" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -33,11 +43,34 @@ size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "You play against"
 
-[node name="Button" type="Button" parent="MarginContainer"]
+[node name="Button_Back" type="Button" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
+size_flags_horizontal = 8
+size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Back"
 
-[connection signal="pressed" from="MarginContainer/Button" to="." method="_on_button_pressed"]
+[node name="Button_Draw_Card" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Draw"
+
+[node name="Button_Discard_Card" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Discard"
+
+[node name="Hand" type="ColorRect" parent="MarginContainer"]
+custom_minimum_size = Vector2(800, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("4_a0bb1")
+hand_curve = SubResource("Curve_a0bb1")
+rotation_curve = SubResource("Curve_gk84w")
+
+[connection signal="pressed" from="MarginContainer/Button_Back" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Button_Draw_Card" to="." method="_on_button_draw_card_pressed"]
+[connection signal="pressed" from="MarginContainer/Button_Discard_Card" to="." method="_on_button_discard_card_pressed"]

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cknb61wfrkfuh"]
+
+[ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://scripts/card.gd" id="1_2cfb2"]
+[ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
+
+[node name="Card" type="Panel"]
+custom_minimum_size = Vector2(100, 140)
+offset_right = 100.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 140)
+script = ExtResource("1_2cfb2")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(100, 140)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_ovagr")
+expand_mode = 1

@@ -5,3 +5,6 @@ res://scenes/main.tscn
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
+res://scenes/nostra/card.tscn
+res://scripts/card.gd
+res://scripts/hand.gd
