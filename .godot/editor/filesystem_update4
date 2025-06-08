@@ -5,4 +5,3 @@ res://scenes/main.tscn
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
-res://scripts/card_data.gd

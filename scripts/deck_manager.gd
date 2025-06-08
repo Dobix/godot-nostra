@@ -33,3 +33,12 @@ func _ready():
 func get_deck() -> Array[CardData]:
 	_ready()
 	return all_cards.duplicate()
+
+func draw_cards_from_deck(deck: Array[CardData], count: int) -> Array[CardData]:
+	var hand: Array[CardData] = []
+	for i in range(count):
+		if deck.is_empty():
+			break  # kein Nachziehfehler
+		var card = deck.pop_front()  # zieht vorn die Karte raus
+		hand.append(card)
+	return hand
