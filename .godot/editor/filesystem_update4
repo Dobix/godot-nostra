@@ -1,9 +1,8 @@
+res://scenes/nostra/nostra_game.tscn
+res://scripts/deck_manager.gd
+res://scripts/nostra_game.gd
 res://scenes/main.tscn
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
-res://scenes/nostra/nostra_game.tscn
-res://scripts/nostra_game.gd
-res://scripts/main.gd
-res://scripts/npc.gd
-res://scripts/player.gd
+res://scripts/card_data.gd
