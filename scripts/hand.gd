@@ -21,7 +21,7 @@ func _notification(what):
 
 func _update_hand_size() -> void:
 	var screen_size = get_viewport().get_visible_rect().size
-	size = Vector2(screen_size.x * 0.50, screen_size.y * 0.25)
+	size = Vector2(screen_size.x * 0.50, screen_size.y * 0.30)
 	position = Vector2(
 		(screen_size.x - size.x) / 2,
 		screen_size.y - size.y

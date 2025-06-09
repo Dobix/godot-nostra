@@ -1,8 +1,9 @@
+ColorRect
+AnimationPlayer
 Control
 Button
 TextureRect
 Panel
-ColorRect
 Node2D
 CollisionShape2D
 Area2D
@@ -11,4 +12,3 @@ Label
 MarginContainer
 CanvasLayer
 CanvasModulate
-Node

@@ -34,9 +34,9 @@ func start_nostra(npc_name: String):
 	#for card in npc_deck:
 		#print(" - ", card.name+" ", card.color)
 	#
-	print("Player Hand:")
-	for c in player_hand:
-		print(c.name+" ", c.color)
+	#print("Player Hand:")
+	#for c in player_hand:
+		#print(c.name+" ", c.color)e
 #
 	#print("NPC Hand:")
 	#for c in npc_hand:

@@ -1,13 +1,71 @@
-[gd_scene load_steps=3 format=3 uid="uid://cknb61wfrkfuh"]
+[gd_scene load_steps=7 format=3 uid="uid://cknb61wfrkfuh"]
 
 [ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://scripts/card.gd" id="1_2cfb2"]
 [ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
 
+[sub_resource type="Animation" id="Animation_2cfb2"]
+resource_name = "hover_in"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.05, 1.05)]
+}
+
+[sub_resource type="Animation" id="Animation_l0exg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_05jgl"]
+resource_name = "hover_out"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_05jgl"]
+_data = {
+&"RESET": SubResource("Animation_l0exg"),
+&"hover_in": SubResource("Animation_2cfb2"),
+&"hover_out": SubResource("Animation_05jgl")
+}
+
 [node name="Card" type="Panel"]
 custom_minimum_size = Vector2(120, 180)
-offset_right = 100.0
-offset_bottom = 140.0
-pivot_offset = Vector2(50, 140)
+anchors_preset = -1
+anchor_right = 0.104
+anchor_bottom = 0.278
+offset_right = -19.808
+offset_bottom = -40.144
+pivot_offset = Vector2(60, 180)
+size_flags_horizontal = 4
 script = ExtResource("1_2cfb2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -20,3 +78,11 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_ovagr")
 expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_05jgl")
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
