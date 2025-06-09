@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
 
 [node name="Card" type="Panel"]
-custom_minimum_size = Vector2(100, 140)
+custom_minimum_size = Vector2(120, 180)
 offset_right = 100.0
 offset_bottom = 140.0
 pivot_offset = Vector2(50, 140)
@@ -12,8 +12,11 @@ script = ExtResource("1_2cfb2")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(100, 140)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_ovagr")
 expand_mode = 1
