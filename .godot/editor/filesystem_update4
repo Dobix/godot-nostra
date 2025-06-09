@@ -6,3 +6,6 @@ res://scenes/nostra/nostra_game.tscn
 res://scenes/nostra/card.tscn
 res://scripts/card.gd
 res://scripts/hand.gd
+res://scripts/nostra_game.gd
+res://scripts/card_data.gd
+res://scripts/deck_manager.gd
