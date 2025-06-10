@@ -23,7 +23,7 @@ func start_nostra(npc_name: String):
 	npc_hand = deck_manager.draw_cards_from_deck(npc_deck, 3)
 
 	for card_data in player_hand:
-		hand.draw_card(card_data.image_path)
+		hand.draw_card(card_data)
 	
 	# Debug check
 	#print("Spielerdeck:")

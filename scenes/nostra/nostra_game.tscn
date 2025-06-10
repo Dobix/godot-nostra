@@ -67,6 +67,7 @@ custom_minimum_size = Vector2(600, 180)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+color = Color(1, 1, 1, 0)
 script = ExtResource("4_a0bb1")
 hand_curve = SubResource("Curve_a0bb1")
 rotation_curve = SubResource("Curve_gk84w")

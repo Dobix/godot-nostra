@@ -2,6 +2,7 @@ class_name Hand
 extends ColorRect
 
 const CARD = preload("res://scenes/nostra/card.tscn")
+var selected_card: Card = null
 
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
@@ -10,6 +11,8 @@ const CARD = preload("res://scenes/nostra/card.tscn")
 @export var x_sep := -10
 @export var y_min := 0
 @export var y_max := -15
+@export var card_id: int = -1
+
 
 func _ready() -> void:
 	_update_hand_size()
@@ -18,6 +21,7 @@ func _notification(what):
 	if what == NOTIFICATION_RESIZED:
 		_update_hand_size()
 		_update_cards()
+		
 
 func _update_hand_size() -> void:
 	var screen_size = get_viewport().get_visible_rect().size
@@ -27,11 +31,14 @@ func _update_hand_size() -> void:
 		screen_size.y - size.y
 	)
 
-func draw_card(card_image_path: String) -> void:
+func draw_card(card_data: CardData) -> void:
 	var new_card = CARD.instantiate()
-	new_card.image = load(card_image_path)
+	new_card.image = load(card_data.image_path)
+	new_card.card_data = card_data
 	add_child(new_card)
+	new_card.connect("card_selected", Callable(self, "_on_card_selected"))
 	_update_cards()
+
 	
 func discard_card() -> void:
 	if get_child_count() < 1:
@@ -41,6 +48,22 @@ func discard_card() -> void:
 	child.reparent(get_tree().root)
 	child.queue_free()
 	_update_cards()
+
+func _on_card_selected(card: Card) -> void:
+	if selected_card and selected_card != card:
+		selected_card.selected = false
+		selected_card.border.visible = false
+	
+	if selected_card == card:
+		card.selected = false
+		card.border.visible = false
+		selected_card = null
+	else:
+		card.selected = true
+		card.border.visible = true
+		selected_card = card
+		print("Karte ausgewählt mit ID:", card.card_data.id)
+
 
 func _update_cards() -> void:
 	var cards := get_child_count()

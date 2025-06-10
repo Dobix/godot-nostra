@@ -1,7 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://cknb61wfrkfuh"]
+[gd_scene load_steps=8 format=3 uid="uid://cknb61wfrkfuh"]
 
 [ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://scripts/card.gd" id="1_2cfb2"]
 [ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cfb2"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Animation" id="Animation_l0exg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_2cfb2"]
 resource_name = "hover_in"
@@ -17,21 +35,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1.05, 1.05)]
-}
-
-[sub_resource type="Animation" id="Animation_l0exg"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_05jgl"]
@@ -59,23 +62,42 @@ _data = {
 
 [node name="Card" type="Panel"]
 custom_minimum_size = Vector2(120, 180)
-anchors_preset = -1
-anchor_right = 0.104
-anchor_bottom = 0.278
-offset_right = -19.808
-offset_bottom = -40.144
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1032.0
+offset_bottom = -468.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(60, 180)
-size_flags_horizontal = 4
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_2cfb2")
 script = ExtResource("1_2cfb2")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(100, 140)
+[node name="Border" type="ColorRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 90)
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
 texture = ExtResource("1_ovagr")
 expand_mode = 1
 
@@ -84,5 +106,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_05jgl")
 }
 
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

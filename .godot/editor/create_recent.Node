@@ -1,14 +1,14 @@
 ColorRect
+MarginContainer
+Panel
+NinePatchRect
 AnimationPlayer
 Control
 Button
 TextureRect
-Panel
 Node2D
 CollisionShape2D
 Area2D
 Sprite2D
 Label
-MarginContainer
 CanvasLayer
-CanvasModulate
