@@ -55,6 +55,20 @@ text = "Du bist dran!"
 layout_mode = 2
 size_flags_horizontal = 4
 
+[node name="npc_decision_label" type="Label" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_8dttg")
+text = "Der Gegner sagt:"
+
+[node name="round_result_label" type="Label" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_8dttg")
+text = "Der Gegner sagt:"
+
 [node name="Button_Roll" type="Button" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

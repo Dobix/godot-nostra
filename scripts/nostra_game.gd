@@ -6,6 +6,8 @@ extends CanvasLayer
 @onready var dice_result: Label = $MarginContainer/Dice_result
 @onready var roll_button: Button = $MarginContainer/Button_Roll
 @onready var turn_label: Label = $MarginContainer/Turn_label
+@onready var npc_decision_label: Label = $MarginContainer/npc_decision_label
+@onready var round_result_label: Label = $MarginContainer/round_result_label
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -128,13 +130,17 @@ func _start_npc_turn():
 	attacker_card_id = card_data.id
 	attacker_decision = ["älter", "jünger"].pick_random()
 
-	print("NPC spielt Karte mit ID %d und sagt: %s" % [attacker_card_id, attacker_decision])
-
-	await get_tree().create_timer(1.5).timeout
+	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
+	npc_decision_label.show()
+	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_id)
+	
+	await get_tree().create_timer(2.0).timeout
+	
 	request_player_response()
 
+
 func request_player_response():
-	print("Spieler darf reagieren!")
+	turn_label.text = "Dein Zug: Reagiere!"
 	hand.allowed_to_interact = true
 
 	
@@ -144,6 +150,7 @@ func respond_npc():
 	var decision = ["älter", "jünger"].pick_random()
 
 	print("NPC reagiert mit Karte ID %d (%s)" % [card_data.id, decision])
+	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_id)
 	await get_tree().create_timer(1.5).timeout
 
 	resolve_round(attacker_card_id, card_data.id, attacker_decision, decision)
@@ -172,23 +179,62 @@ func evaluate_round(player: String, card_id: int, decision: String):
 		resolve_round(attacker_card_id, card_id, attacker_decision, decision)
 
 func resolve_round(id1: int, id2: int, decision1: String, decision2: String):
-	print("\n🔍 Runde auswerten:")
-	print("Angreifer: ID %d (%s)" % [id1, decision1])
-	print("Verteidiger: ID %d (%s)" % [id2, decision2])
+	turn_label.text = ""
+	
+	var winner := ""
+	
+	if decision1 == decision2:
+		if (decision1 == "älter" and id1 > id2) or (decision1 == "jünger" and id1 < id2):
+			winner = current_attacker
+		else:
+			winner = current_defender
+	else:
+		# Entscheidungen unterschiedlich: Angreifer gewinnt automatisch (Beispielregel)
+		winner = current_attacker
+	
+	round_result_label.text = "%s gewinnt die Runde!" % winner
+	round_result_label.show()
 
-	# Hier kannst du Vergleiche, Punkte oder Siegbedingungen einbauen
-
+	await get_tree().create_timer(3.0).timeout
+	
+	round_result_label.hide()
+	
 	await get_tree().create_timer(2.0).timeout
+	draw_cards_if_possible()
+	await get_tree().create_timer(1.0).timeout
 	next_turn()
+
+
+func remove_card_from_player_hand(card_id: int):
+	for card in hand.get_children():
+		if card.card_data != null and card.card_data.id == card_id:
+			player_hand = player_hand.filter(func(c): return c.id != card_id)
+			card.reparent(get_tree().root)  # aus Hand rausnehmen
+			card.queue_free()
+			break
+
+func draw_cards_if_possible():
+	if not player_deck.is_empty():
+		var card_data: CardData = player_deck.pop_front()
+		player_hand.append(card_data)
+		hand.draw_card(card_data)  # visuell!
+	
+	if not npc_deck.is_empty():
+		var card_data: CardData = npc_deck.pop_front()
+		npc_hand.append(card_data)
 
 func _on_older_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
 		evaluate_round("Spieler", selected_popup_card.id, "älter")
+		npc_decision_label.hide()
+		remove_card_from_player_hand(selected_popup_card.id)
 
 func _on_younger_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
 		evaluate_round("Spieler", selected_popup_card.id, "jünger")
+		npc_decision_label.hide()
+		remove_card_from_player_hand(selected_popup_card.id)
