@@ -15,6 +15,7 @@ var selected_card: Card = null
 @export var card_id: int = -1
 @export var on_card_dbl_click: Callable
 
+@export var allowed_to_interact := false
 
 
 func _ready() -> void:
@@ -53,12 +54,15 @@ func discard_card() -> void:
 	_update_cards()
 
 func _on_card_selected(card: Card) -> void:
+	if not allowed_to_interact:
+		print("Nicht dein Zug!")
+		return
+
 	if selected_card and selected_card != card:
 		selected_card.selected = false
 		selected_card.border.visible = false
 
 	if selected_card == card:
-		# Karte wurde erneut ausgewählt ⇒ Popup aufrufen
 		if on_card_dbl_click.is_valid():
 			on_card_dbl_click.call(card.card_data)
 	else:

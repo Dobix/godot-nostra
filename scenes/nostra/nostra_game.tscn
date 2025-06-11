@@ -29,6 +29,7 @@ layout_mode = 2
 color = Color(0.353308, 0.2695, 0.395739, 1)
 
 [node name="Heading_Label" type="Label" parent="MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -42,6 +43,24 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "You play against"
+
+[node name="Turn_label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_8dttg")
+text = "Du bist dran!"
+
+[node name="Dice_result" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button_Roll" type="Button" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_ddfj3")
+text = "Würfeln"
 
 [node name="Button_Back" type="Button" parent="MarginContainer"]
 layout_mode = 2
@@ -99,6 +118,7 @@ size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Jünger"
 
+[connection signal="pressed" from="MarginContainer/Button_Roll" to="." method="_on_button_roll_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Back" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Draw_Card" to="." method="_on_button_draw_card_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Discard_Card" to="." method="_on_button_discard_card_pressed"]
