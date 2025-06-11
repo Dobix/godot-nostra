@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var deck_manager = preload("res://scripts/deck_manager.gd").new()
 @onready var hand: ColorRect = $MarginContainer/Hand
+@onready var popup: PopupPanel = $MarginContainer/PopupPanel
 
 var player_deck: Array[CardData] = []
 var npc_deck: Array[CardData] = []
@@ -9,7 +10,10 @@ var npc_deck: Array[CardData] = []
 var player_hand: Array[CardData] = []
 var npc_hand: Array[CardData] = []
 
+var selected_popup_card: CardData = null
+
 func start_nostra(npc_name: String):
+	hand.on_card_dbl_click = Callable(self, "show_card_popup")
 	print("Starte gegen:", npc_name)
 	$MarginContainer/Enemy_Label.text = "You play against: " + npc_name
 	
@@ -42,6 +46,10 @@ func start_nostra(npc_name: String):
 	#for c in npc_hand:
 		#print(c.name+" ", c.color)
 
+func show_card_popup(card_data: CardData):
+	selected_popup_card = card_data
+	popup.popup_centered()
+
 func _on_button_draw_card_pressed() -> void:
 	hand.draw_card("")
 
@@ -52,3 +60,13 @@ func _on_button_discard_card_pressed() -> void:
 func _on_button_pressed() -> void:
 	Main.switch_scene("overworld")
 	queue_free()
+
+func _on_older_pressed() -> void:
+	if selected_popup_card:
+		print("Karte mit ID %d wurde als älter ausgespielt" % selected_popup_card.id)
+		popup.hide()
+
+func _on_younger_pressed() -> void:
+	if selected_popup_card:
+		print("Karte mit ID %d wurde als jünger ausgespielt" % selected_popup_card.id)
+		popup.hide()

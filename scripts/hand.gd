@@ -11,7 +11,10 @@ var selected_card: Card = null
 @export var x_sep := -10
 @export var y_min := 0
 @export var y_max := -15
+
 @export var card_id: int = -1
+@export var on_card_dbl_click: Callable
+
 
 
 func _ready() -> void:
@@ -53,11 +56,11 @@ func _on_card_selected(card: Card) -> void:
 	if selected_card and selected_card != card:
 		selected_card.selected = false
 		selected_card.border.visible = false
-	
+
 	if selected_card == card:
-		card.selected = false
-		card.border.visible = false
-		selected_card = null
+		# Karte wurde erneut ausgewählt ⇒ Popup aufrufen
+		if on_card_dbl_click.is_valid():
+			on_card_dbl_click.call(card.card_data)
 	else:
 		card.selected = true
 		card.border.visible = true

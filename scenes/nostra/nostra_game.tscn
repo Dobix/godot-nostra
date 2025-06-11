@@ -72,6 +72,35 @@ script = ExtResource("4_a0bb1")
 hand_curve = SubResource("Curve_a0bb1")
 rotation_curve = SubResource("Curve_gk84w")
 
+[node name="PopupPanel" type="PopupPanel" parent="MarginContainer"]
+initial_position = 2
+size = Vector2i(301, 100)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PopupPanel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Older" type="Button" parent="MarginContainer/PopupPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_ddfj3")
+text = "Älter"
+
+[node name="Younger" type="Button" parent="MarginContainer/PopupPanel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_ddfj3")
+text = "Jünger"
+
 [connection signal="pressed" from="MarginContainer/Button_Back" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Draw_Card" to="." method="_on_button_draw_card_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Discard_Card" to="." method="_on_button_discard_card_pressed"]
+[connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Older" to="." method="_on_older_pressed"]
+[connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Younger" to="." method="_on_younger_pressed"]
