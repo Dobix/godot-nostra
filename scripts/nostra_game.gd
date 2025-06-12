@@ -230,6 +230,7 @@ func _on_button_show_end_result_pressed():
 
 func next_turn():
 	round_active = false
+	check_game_over()
 	if current_turn == Turn.PLAYER:
 		_start_npc_turn()
 	else:
@@ -262,6 +263,7 @@ func draw_cards_if_possible():
 		var card_data: CardData = player_deck.pop_front()
 		player_hand.append(card_data)
 		hand.draw_card(card_data)
+		check_game_over()
 
 	if not npc_deck.is_empty():
 		var card_data: CardData = npc_deck.pop_front()
