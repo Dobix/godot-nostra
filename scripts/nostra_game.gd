@@ -8,6 +8,8 @@ extends CanvasLayer
 @onready var turn_label: Label = $MarginContainer/Turn_label
 @onready var npc_decision_label: Label = $MarginContainer/npc_decision_label
 @onready var round_result_label: Label = $MarginContainer/round_result_label
+@onready var next_turn_button: Button = $MarginContainer/Button_Next_Turn
+@onready var show_end_result_button: Button = $MarginContainer/Button_show_end_result
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -26,15 +28,21 @@ var selected_popup_card: CardData = null
 
 var current_attacker: String  # "Spieler" oder "NPC"
 var current_defender: String
-var attacker_card_id: int
+var attacker_card_data: CardData = null
+var defender_card_data: CardData = null
 var attacker_decision: String
 
+var player_discard_pile: Array[CardData] = []
+var npc_discard_pile: Array[CardData] = []
+
+var round_just_ended := false
+
 func start_nostra(npc_name: String):
+	turn_label.text = ""
 	hand.allowed_to_interact = false
 	hand.on_card_dbl_click = Callable(self, "show_card_popup")
-	print("Starte gegen:", npc_name)
 	$MarginContainer/Enemy_Label.text = "You play against: " + npc_name
-	
+
 	var full_deck = deck_manager.get_deck()
 	full_deck.shuffle()
 	var full_game_deck = full_deck.slice(0, 24)
@@ -46,38 +54,10 @@ func start_nostra(npc_name: String):
 
 	for card_data in player_hand:
 		hand.draw_card(card_data)
-	
-	# Debug check
-	#print("Spielerdeck:")
-	#for card in player_deck:
-		#print(" - ", card.name+" ", card.color)
-#
-	#print("Gegnerdeck:")
-	#for card in npc_deck:
-		#print(" - ", card.name+" ", card.color)
-	#
-	#print("Player Hand:")
-	#for c in player_hand:
-		#print(c.name+" ", c.color)e
-#
-	#print("NPC Hand:")
-	#for c in npc_hand:
-		#print(c.name+" ", c.color)
 
 func show_card_popup(card_data: CardData):
 	selected_popup_card = card_data
 	popup.popup_centered()
-
-func _on_button_draw_card_pressed() -> void:
-	hand.draw_card("")
-
-func _on_button_discard_card_pressed() -> void:
-	hand.discard_card()
-
-
-func _on_button_pressed() -> void:
-	Main.switch_scene("overworld")
-	queue_free()
 
 func _on_button_roll_pressed() -> void:
 	player_roll = randi() % 6 + 1
@@ -106,7 +86,6 @@ func _on_button_roll_pressed() -> void:
 		await get_tree().create_timer(2.0).timeout
 		roll_button.show()
 
-
 func _start_player_turn():
 	current_turn = Turn.PLAYER
 	current_attacker = "Spieler"
@@ -114,7 +93,8 @@ func _start_player_turn():
 	round_active = true
 	hand.allowed_to_interact = true
 	turn_label.text = "Du bist dran"
-
+	next_turn_button.hide()
+	show_end_result_button.hide()
 
 func _start_npc_turn():
 	current_turn = Turn.NPC
@@ -123,38 +103,130 @@ func _start_npc_turn():
 	round_active = true
 	hand.allowed_to_interact = false
 	turn_label.text = "Gegner denkt …"
-	
+	next_turn_button.hide()
+	show_end_result_button.hide()
+
 	await get_tree().create_timer(1.0).timeout
 
-	var card_data = npc_hand.pop_front()
-	attacker_card_id = card_data.id
+	attacker_card_data = npc_hand.pop_front()
 	attacker_decision = ["älter", "jünger"].pick_random()
-
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
-	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_id)
-	
-	await get_tree().create_timer(2.0).timeout
-	
-	request_player_response()
 
+	await get_tree().create_timer(2.0).timeout
+	request_player_response()
 
 func request_player_response():
 	turn_label.text = "Dein Zug: Reagiere!"
 	hand.allowed_to_interact = true
 
-	
 func respond_npc():
 	await get_tree().create_timer(1.0).timeout
-	var card_data = npc_hand.pop_front()
+	defender_card_data = npc_hand.pop_front()
 	var decision = ["älter", "jünger"].pick_random()
-
-	print("NPC reagiert mit Karte ID %d (%s)" % [card_data.id, decision])
-	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_id)
 	await get_tree().create_timer(1.5).timeout
+	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
-	resolve_round(attacker_card_id, card_data.id, attacker_decision, decision)
+func evaluate_round(player: String, card_data: CardData, decision: String):
+	if player == current_attacker:
+		attacker_card_data = card_data
+		attacker_decision = decision
+		if current_defender == "NPC":
+			respond_npc()
+	else:
+		defender_card_data = card_data
+		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
+func resolve_round(card1: CardData, card2: CardData, decision1: String, decision2: String):
+	npc_decision_label.hide()
+	turn_label.text = ""
+
+	var attacker_wins = false
+	var defender_wins = false
+
+	if decision1 == "älter" and card1.value > card2.value:
+		attacker_wins = true
+	elif decision1 == "jünger" and card1.value < card2.value:
+		attacker_wins = true
+
+	if decision2 == "älter" and card2.value > card1.value:
+		defender_wins = true
+	elif decision2 == "jünger" and card2.value < card1.value:
+		defender_wins = true
+
+	var result_text = ""
+	result_text += current_attacker + " sagt: Meine Karte (" + str(card1.value) + ") ist " + decision1 + "\n"
+	result_text += current_defender + " sagt: Meine Karte (" + str(card2.value) + ") ist " + decision2 + "\n\n"
+
+	if attacker_wins and defender_wins:
+		result_text += "Beide hatten recht!"
+		_add_to_discard(current_attacker, card1)
+		_add_to_discard(current_defender, card2)
+	elif attacker_wins:
+		result_text += current_attacker + " gewinnt die Runde!"
+		_add_to_discard(current_attacker, card1)
+		_add_to_discard(current_attacker, card2)
+	elif defender_wins:
+		result_text += current_defender + " gewinnt die Runde!"
+		_add_to_discard(current_defender, card1)
+		_add_to_discard(current_defender, card2)
+	else:
+		result_text += "Niemand hat recht!"
+		if current_attacker == "Spieler":
+			_insert_card_back(player_deck, card1)
+			_insert_card_back(npc_deck, card2)
+		else:
+			_insert_card_back(npc_deck, card1)
+			_insert_card_back(player_deck, card2)
+
+	round_result_label.text = result_text
+	round_result_label.show()
+	round_just_ended = true
+
+	draw_cards_if_possible()
+	check_game_over()
+
+	if player_hand.is_empty() and player_deck.is_empty() and npc_hand.is_empty() and npc_deck.is_empty():
+		show_end_result_button.show()
+	else:
+		next_turn_button.show()
+
+func _add_to_discard(who: String, card: CardData):
+	if who == "Spieler":
+		player_discard_pile.append(card)
+	elif who == "NPC":
+		npc_discard_pile.append(card)
+
+func _insert_card_back(deck: Array[CardData], card: CardData):
+	var index = randi() % (deck.size() + 1)
+	deck.insert(index, card)
+
+func _on_button_next_turn_pressed():
+	round_result_label.hide()
+	next_turn_button.hide()
+	round_just_ended = false
+	next_turn()
+
+func _on_button_show_end_result_pressed():
+	var player_age_total := 0
+	for card in player_discard_pile:
+		player_age_total += card.age
+
+	var npc_age_total := 0
+	for card in npc_discard_pile:
+		npc_age_total += card.age
+
+	var result := "Spieler hat " + str(player_age_total) + " Punkte erreicht.\n"
+	result += "NPC hat " + str(npc_age_total) + " Punkte erreicht.\n\n"
+
+	if player_age_total > npc_age_total:
+		result += "Spieler, du hast gewonnen!"
+	elif npc_age_total > player_age_total:
+		result += "NPC hat gewonnen."
+	else:
+		result += "Unentschieden!"
+
+	show_game_over(result)
 
 func next_turn():
 	round_active = false
@@ -163,53 +235,25 @@ func next_turn():
 	else:
 		_start_player_turn()
 
-func evaluate_round(player: String, card_id: int, decision: String):
-	if player == current_attacker:
-		attacker_card_id = card_id
-		attacker_decision = decision
+func check_game_over():
+	if round_just_ended and player_hand.is_empty() and player_deck.is_empty() and npc_hand.is_empty() and npc_deck.is_empty():
+		next_turn_button.hide()
+		show_end_result_button.show()
 
-		if current_defender == "NPC":
-			respond_npc()
-		else:
-			request_player_response()
-	else:
-		var defender_card_id = card_id
-		print("[%s reagiert mit Karte ID %d (%s)]" % [player, defender_card_id, decision])
-
-		resolve_round(attacker_card_id, card_id, attacker_decision, decision)
-
-func resolve_round(id1: int, id2: int, decision1: String, decision2: String):
+func show_game_over(text: String):
 	turn_label.text = ""
-	
-	var winner := ""
-	
-	if decision1 == decision2:
-		if (decision1 == "älter" and id1 > id2) or (decision1 == "jünger" and id1 < id2):
-			winner = current_attacker
-		else:
-			winner = current_defender
-	else:
-		# Entscheidungen unterschiedlich: Angreifer gewinnt automatisch (Beispielregel)
-		winner = current_attacker
-	
-	round_result_label.text = "%s gewinnt die Runde!" % winner
+	npc_decision_label.hide()
+	round_result_label.text = text
 	round_result_label.show()
-
-	await get_tree().create_timer(3.0).timeout
-	
-	round_result_label.hide()
-	
-	await get_tree().create_timer(2.0).timeout
-	draw_cards_if_possible()
-	await get_tree().create_timer(1.0).timeout
-	next_turn()
-
+	hand.allowed_to_interact = false
+	next_turn_button.hide()
+	show_end_result_button.hide()
 
 func remove_card_from_player_hand(card_id: int):
 	for card in hand.get_children():
 		if card.card_data != null and card.card_data.id == card_id:
 			player_hand = player_hand.filter(func(c): return c.id != card_id)
-			card.reparent(get_tree().root)  # aus Hand rausnehmen
+			card.reparent(get_tree().root)
 			card.queue_free()
 			break
 
@@ -217,17 +261,19 @@ func draw_cards_if_possible():
 	if not player_deck.is_empty():
 		var card_data: CardData = player_deck.pop_front()
 		player_hand.append(card_data)
-		hand.draw_card(card_data)  # visuell!
-	
+		hand.draw_card(card_data)
+
 	if not npc_deck.is_empty():
 		var card_data: CardData = npc_deck.pop_front()
 		npc_hand.append(card_data)
+
+	check_game_over()
 
 func _on_older_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("Spieler", selected_popup_card.id, "älter")
+		evaluate_round("Spieler", selected_popup_card, "älter")
 		npc_decision_label.hide()
 		remove_card_from_player_hand(selected_popup_card.id)
 
@@ -235,6 +281,6 @@ func _on_younger_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("Spieler", selected_popup_card.id, "jünger")
+		evaluate_round("Spieler", selected_popup_card, "jünger")
 		npc_decision_label.hide()
 		remove_card_from_player_hand(selected_popup_card.id)

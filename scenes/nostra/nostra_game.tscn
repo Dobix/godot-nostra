@@ -83,17 +83,21 @@ size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Back"
 
-[node name="Button_Draw_Card" type="Button" parent="MarginContainer"]
+[node name="Button_show_end_result" type="Button" parent="MarginContainer"]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-text = "Draw"
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_ddfj3")
+text = "Zeige Ergebnis"
 
-[node name="Button_Discard_Card" type="Button" parent="MarginContainer"]
+[node name="Button_Next_Turn" type="Button" parent="MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-text = "Discard"
+theme_override_fonts/font = ExtResource("2_ddfj3")
+text = "Nächste Runde"
 
 [node name="Hand" type="ColorRect" parent="MarginContainer"]
 custom_minimum_size = Vector2(600, 180)
@@ -115,8 +119,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_right = 297.0
+offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -134,7 +138,7 @@ text = "Jünger"
 
 [connection signal="pressed" from="MarginContainer/Button_Roll" to="." method="_on_button_roll_pressed"]
 [connection signal="pressed" from="MarginContainer/Button_Back" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="MarginContainer/Button_Draw_Card" to="." method="_on_button_draw_card_pressed"]
-[connection signal="pressed" from="MarginContainer/Button_Discard_Card" to="." method="_on_button_discard_card_pressed"]
+[connection signal="pressed" from="MarginContainer/Button_show_end_result" to="." method="_on_button_show_end_result_pressed"]
+[connection signal="pressed" from="MarginContainer/Button_Next_Turn" to="." method="_on_button_next_turn_pressed"]
 [connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Older" to="." method="_on_older_pressed"]
 [connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Younger" to="." method="_on_younger_pressed"]

@@ -1,9 +1,10 @@
 res://scenes/nostra/nostra_game.tscn
 res://shader/card.gdshader
+res://scripts/nostra_game.gd
 res://scenes/main.tscn
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
 res://scenes/nostra/card.tscn
-res://scripts/hand.gd
-res://scripts/nostra_game.gd
+res://scripts/card_data.gd
+res://scripts/deck_manager.gd
