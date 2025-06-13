@@ -1,12 +1,13 @@
 extends Area2D
 
 @export var npc_name: String = "Kalle"
+@export var difficulty: NostraAIEnemy.Difficulty = NostraAIEnemy.Difficulty.EASY
 
 var can_interact := false
 
 func _process(delta: float) -> void:
 	if can_interact and Input.is_action_just_pressed("Interact"):
-		Main.switch_scene("nostra", npc_name)
+		Main.switch_scene("nostra", npc_name, difficulty)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player":

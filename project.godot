@@ -13,11 +13,16 @@ config_version=5
 config/name="Nostra_v1"
 run/main_scene="uid://byr2bhwtmxx3h"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
 Main="*res://scripts/main.gd"
+
+[file_customization]
+
+folder_colors={
+"res://scripts/nostra/": "purple"
+}
 
 [input]
 

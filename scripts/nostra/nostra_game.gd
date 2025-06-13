@@ -1,6 +1,8 @@
 extends CanvasLayer
 
-@onready var deck_manager = preload("res://scripts/deck_manager.gd").new()
+@onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
+@onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
+
 @onready var hand: ColorRect = $MarginContainer/Hand
 @onready var popup: PopupPanel = $MarginContainer/PopupPanel
 @onready var dice_result: Label = $MarginContainer/Dice_result
@@ -10,6 +12,7 @@ extends CanvasLayer
 @onready var round_result_label: Label = $MarginContainer/round_result_label
 @onready var next_turn_button: Button = $MarginContainer/Button_Next_Turn
 @onready var show_end_result_button: Button = $MarginContainer/Button_show_end_result
+
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -37,7 +40,8 @@ var npc_discard_pile: Array[CardData] = []
 
 var round_just_ended := false
 
-func start_nostra(npc_name: String):
+func start_nostra(npc_name: String, difficulty: int):
+	ai.difficulty = difficulty
 	turn_label.text = ""
 	hand.allowed_to_interact = false
 	hand.on_card_dbl_click = Callable(self, "show_card_popup")
@@ -108,8 +112,10 @@ func _start_npc_turn():
 
 	await get_tree().create_timer(1.0).timeout
 
-	attacker_card_data = npc_hand.pop_front()
-	attacker_decision = ["älter", "jünger"].pick_random()
+	var result = ai.choose_attack_card(npc_hand)
+	attacker_card_data = result["card"]
+	attacker_decision = result["decision"]
+
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
 
@@ -122,8 +128,10 @@ func request_player_response():
 
 func respond_npc():
 	await get_tree().create_timer(1.0).timeout
-	defender_card_data = npc_hand.pop_front()
-	var decision = ["älter", "jünger"].pick_random()
+	var result = ai.choose_defense_card(npc_hand)
+	defender_card_data = result["card"]
+	var decision = result["decision"]
+
 	await get_tree().create_timer(1.5).timeout
 	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
