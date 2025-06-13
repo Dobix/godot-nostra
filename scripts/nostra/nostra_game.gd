@@ -29,7 +29,7 @@ var npc_hand: Array[CardData] = []
 
 var selected_popup_card: CardData = null
 
-var current_attacker: String  # "Spieler" oder "NPC"
+var current_attacker: String
 var current_defender: String
 var attacker_card_data: CardData = null
 var defender_card_data: CardData = null
@@ -98,7 +98,6 @@ func _start_player_turn():
 	hand.allowed_to_interact = true
 	turn_label.text = "Du bist dran"
 	next_turn_button.hide()
-	show_end_result_button.hide()
 
 func _start_npc_turn():
 	current_turn = Turn.NPC
@@ -108,13 +107,13 @@ func _start_npc_turn():
 	hand.allowed_to_interact = false
 	turn_label.text = "Gegner denkt …"
 	next_turn_button.hide()
-	show_end_result_button.hide()
 
 	await get_tree().create_timer(1.0).timeout
 
 	var result = ai.choose_attack_card(npc_hand)
 	attacker_card_data = result["card"]
 	attacker_decision = result["decision"]
+	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_data.id)
 
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
@@ -131,6 +130,7 @@ func respond_npc():
 	var result = ai.choose_defense_card(npc_hand)
 	defender_card_data = result["card"]
 	var decision = result["decision"]
+	npc_hand = npc_hand.filter(func(c): return c.id != defender_card_data.id)
 
 	await get_tree().create_timer(1.5).timeout
 	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
@@ -192,9 +192,13 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 	round_just_ended = true
 
 	draw_cards_if_possible()
-	check_game_over()
+	await get_tree().create_timer(0.2).timeout
 
-	if player_hand.is_empty() and player_deck.is_empty() and npc_hand.is_empty() and npc_deck.is_empty():
+	var player_empty = player_hand.is_empty() and player_deck.is_empty()
+	var npc_empty = npc_hand.is_empty() and npc_deck.is_empty()
+	
+	if player_empty and npc_empty:
+		next_turn_button.hide()
 		show_end_result_button.show()
 	else:
 		next_turn_button.show()
@@ -238,16 +242,10 @@ func _on_button_show_end_result_pressed():
 
 func next_turn():
 	round_active = false
-	check_game_over()
 	if current_turn == Turn.PLAYER:
 		_start_npc_turn()
 	else:
 		_start_player_turn()
-
-func check_game_over():
-	if round_just_ended and player_hand.is_empty() and player_deck.is_empty() and npc_hand.is_empty() and npc_deck.is_empty():
-		next_turn_button.hide()
-		show_end_result_button.show()
 
 func show_game_over(text: String):
 	turn_label.text = ""
@@ -271,13 +269,10 @@ func draw_cards_if_possible():
 		var card_data: CardData = player_deck.pop_front()
 		player_hand.append(card_data)
 		hand.draw_card(card_data)
-		check_game_over()
 
 	if not npc_deck.is_empty():
 		var card_data: CardData = npc_deck.pop_front()
 		npc_hand.append(card_data)
-
-	check_game_over()
 
 func _on_older_pressed() -> void:
 	if selected_popup_card:
