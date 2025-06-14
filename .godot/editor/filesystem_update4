@@ -7,3 +7,6 @@ res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
 res://scenes/nostra/card.tscn
+res://scenes/nostra/enemy_hand.gd
+res://scripts/nostra/hand.gd
+res://scripts/nostra/card.gd

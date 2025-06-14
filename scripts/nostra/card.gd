@@ -2,6 +2,7 @@ class_name Card
 extends Panel
 
 @export var image: Texture2D
+@export var hover_enabled: bool = true
 @onready var texture_rect: TextureRect = $MarginContainer/TextureRect
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var border: ColorRect = $Border
@@ -23,10 +24,12 @@ func get_scaled_size(hand_size: Vector2) -> Vector2:
 	return Vector2(card_height * aspect_ratio, card_height)
 
 func _on_mouse_entered() -> void:
-	anim.play("hover_in")
+	if hover_enabled:
+		anim.play("hover_in")
 	
 func _on_mouse_exited() -> void:
-	anim.play("hover_out")
+	if hover_enabled:
+		anim.play("hover_out")
 
 func _on_gui_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("left_click"):

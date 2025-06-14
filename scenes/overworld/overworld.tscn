@@ -17,8 +17,10 @@ script = ExtResource("2_xrble")
 
 [node name="NPC" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(428, 242)
+npc_name = "Kalle"
 difficulty = 2
 npc_portrait = ExtResource("4_662u0")
+win_multiplier = 1.5
 
 [node name="NPC2" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(204, 302)

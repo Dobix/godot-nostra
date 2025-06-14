@@ -1,10 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://cundixctlwxji"]
+[gd_scene load_steps=11 format=3 uid="uid://cundixctlwxji"]
 
 [ext_resource type="FontFile" uid="uid://neu5rnvmfq5t" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_8dttg"]
 [ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://scripts/nostra/nostra_game.gd" id="1_ddfj3"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_ddfj3"]
+[ext_resource type="Script" uid="uid://db032qbjqbqjp" path="res://scenes/nostra/enemy_hand.gd" id="4_65yto"]
 [ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://scripts/nostra/hand.gd" id="4_a0bb1"]
 [ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="5_gk84w"]
+
+[sub_resource type="Curve" id="Curve_65yto"]
+_data = [Vector2(0, 1), 0.0, -4.30596, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 4.47323, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_d8jua"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0.0106383, 1), 0.0, -6.42157, 0, 0, Vector2(0.5, 1.49012e-08), 0.0, 0.0, 0, 0, Vector2(1, -1), -6.33708, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Curve" id="Curve_a0bb1"]
 _data = [Vector2(0, 0), 0.0, 6.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
@@ -91,18 +101,38 @@ layout_mode = 2
 texture = ExtResource("5_gk84w")
 expand_mode = 3
 
-[node name="Turn_label" type="Label" parent="."]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -8.0
-offset_right = 182.0
-offset_bottom = 8.0
-grow_vertical = 2
+[node name="Enemy_Hand" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(600, 250)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("4_65yto")
+hand_curve = SubResource("Curve_65yto")
+rotation_curve = SubResource("Curve_d8jua")
+
+[node name="Hand" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(600, 180)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -180.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("1_8dttg")
-text = "Du bist dran!"
+size_flags_vertical = 8
+color = Color(1, 1, 1, 0)
+script = ExtResource("4_a0bb1")
+hand_curve = SubResource("Curve_a0bb1")
+rotation_curve = SubResource("Curve_gk84w")
 
 [node name="Dice_result" type="Label" parent="."]
 anchors_preset = 8
@@ -117,6 +147,19 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+
+[node name="Turn_label" type="Label" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_right = 182.0
+offset_bottom = 8.0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_8dttg")
+text = "Du bist dran!"
 
 [node name="npc_decision_label" type="Label" parent="."]
 visible = false
@@ -202,25 +245,6 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Nächste Runde"
-
-[node name="Hand" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(600, 180)
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -180.0
-offset_right = 300.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 8
-color = Color(1, 1, 1, 0)
-script = ExtResource("4_a0bb1")
-hand_curve = SubResource("Curve_a0bb1")
-rotation_curve = SubResource("Curve_gk84w")
 
 [node name="PopupPanel" type="PopupPanel" parent="."]
 initial_position = 2

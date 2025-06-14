@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var score_handler = preload("res://scripts/nostra/nostra_score_handler.gd").new()
 
 @onready var hand: ColorRect = $Hand
+@onready var enemy_hand: ColorRect = $Enemy_Hand
 @onready var popup: PopupPanel = $PopupPanel
 @onready var dice_result: Label = $Dice_result
 @onready var roll_button: Button = $Button_Roll
@@ -71,6 +72,8 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, wi
 
 	for card_data in player_hand:
 		hand.draw_card(card_data)
+	for card_data in npc_hand:
+		enemy_hand.draw_card(card_data)
 
 func show_card_popup(card_data: CardData):
 	selected_popup_card = card_data
@@ -127,6 +130,7 @@ func _start_npc_turn():
 	attacker_card_data = result["card"]
 	attacker_decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_data.id)
+	enemy_hand.discard_card()
 
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
@@ -144,6 +148,7 @@ func respond_npc():
 	defender_card_data = result["card"]
 	var decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != defender_card_data.id)
+	enemy_hand.discard_card()
 
 	await get_tree().create_timer(1.5).timeout
 	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
@@ -284,6 +289,7 @@ func draw_cards_if_possible():
 	if not npc_deck.is_empty():
 		var card_data: CardData = npc_deck.pop_front()
 		npc_hand.append(card_data)
+		enemy_hand.draw_card(card_data)
 
 func _on_older_pressed() -> void:
 	if selected_popup_card:

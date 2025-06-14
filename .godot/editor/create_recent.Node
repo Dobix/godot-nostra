@@ -1,8 +1,8 @@
+ColorRect
 Label
 VBoxContainer
 TextureRect
 HBoxContainer
-ColorRect
 Button
 PopupPanel
 Popup
