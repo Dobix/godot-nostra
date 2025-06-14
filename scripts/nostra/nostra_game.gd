@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
 @onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
+@onready var score_handler = preload("res://scripts/nostra/nostra_score_handler.gd").new()
 
 @onready var hand: ColorRect = $Hand
 @onready var popup: PopupPanel = $PopupPanel
@@ -40,7 +41,9 @@ var npc_discard_pile: Array[CardData] = []
 
 var round_just_ended := false
 
-func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D):
+var needed_scores
+
+func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, win_multiplier: float):
 	ai.difficulty = difficulty
 	turn_label.text = ""
 	hand.allowed_to_interact = false
@@ -51,11 +54,18 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D):
 	$Player_Info/Player_Portrait.texture = npc_portrait
 	
 	var full_deck = deck_manager.get_deck()
-	full_deck.shuffle()
-	var full_game_deck = full_deck.slice(0, 24)
-	player_deck = full_game_deck.slice(0, 12)
-	npc_deck = full_game_deck.slice(12, 24)
+	player_deck = full_deck.duplicate()
+	npc_deck = full_deck.duplicate()
+	player_deck.shuffle()
+	npc_deck.shuffle()
+	
+	var deck_age_sum = score_handler.sum_card_age(player_deck)
+	
+	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_age_sum)
+	$Enemy_Info/VBoxContainer/Enemy_Score.text = "0/"+str(needed_scores.npc_needed_score)
+	$Player_Info/VBoxContainer/Player_Score.text = "0/"+str(needed_scores.player_needed_score)
 
+	
 	player_hand = deck_manager.draw_cards_from_deck(player_deck, 3)
 	npc_hand = deck_manager.draw_cards_from_deck(npc_deck, 3)
 
@@ -155,18 +165,9 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 	npc_decision_label.hide()
 	turn_label.text = ""
 
-	var attacker_wins = false
-	var defender_wins = false
-
-	if decision1 == "älter" and card1.value > card2.value:
-		attacker_wins = true
-	elif decision1 == "jünger" and card1.value < card2.value:
-		attacker_wins = true
-
-	if decision2 == "älter" and card2.value > card1.value:
-		defender_wins = true
-	elif decision2 == "jünger" and card2.value < card1.value:
-		defender_wins = true
+	var result = score_handler.resolve_round(card1, card2, decision1, decision2)
+	var attacker_wins = result.attacker_wins
+	var defender_wins = result.defender_wins
 
 	var result_text = ""
 	result_text += current_attacker + " sagt: Meine Karte (" + str(card1.value) + ") ist " + decision1 + "\n"
@@ -199,10 +200,6 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 
 	var player_empty = player_hand.is_empty() and player_deck.is_empty()
 	var npc_empty = npc_hand.is_empty() and npc_deck.is_empty()
-	print(player_empty)
-	print(npc_empty)
-	print(player_hand)
-	print(npc_hand)
 	
 	if player_empty and npc_empty:
 		next_turn_button.hide()
@@ -215,6 +212,10 @@ func _add_to_discard(who: String, card: CardData):
 		player_discard_pile.append(card)
 	elif who == "NPC":
 		npc_discard_pile.append(card)
+	var scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
+	$Player_Info/VBoxContainer/Player_Score.text = str(scores.player_score)+"/"+str(needed_scores.player_needed_score)
+	$Enemy_Info/VBoxContainer/Enemy_Score.text = str(scores.npc_score)+"/"+str(needed_scores.npc_needed_score)
+
 
 func _insert_card_back(deck: Array[CardData], card: CardData):
 	var index = randi() % (deck.size() + 1)

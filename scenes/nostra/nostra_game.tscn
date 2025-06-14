@@ -24,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.234023, 0.18882, 0.0760692, 1)
+color = Color(0.134493, 0.108744, 0.0369472, 1)
 
 [node name="Enemy_Info" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 300)
@@ -205,7 +205,7 @@ text = "Nächste Runde"
 
 [node name="Hand" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(600, 180)
-anchors_preset = -1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
