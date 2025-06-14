@@ -1,14 +1,15 @@
+VBoxContainer
+ColorRect
+TextureRect
 Button
 Label
 PopupPanel
 HBoxContainer
 Popup
-ColorRect
 MarginContainer
 Panel
 NinePatchRect
 AnimationPlayer
 Control
-TextureRect
 Node2D
 CollisionShape2D

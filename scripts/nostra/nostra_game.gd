@@ -3,15 +3,15 @@ extends CanvasLayer
 @onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
 @onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
 
-@onready var hand: ColorRect = $MarginContainer/Hand
-@onready var popup: PopupPanel = $MarginContainer/PopupPanel
-@onready var dice_result: Label = $MarginContainer/Dice_result
-@onready var roll_button: Button = $MarginContainer/Button_Roll
-@onready var turn_label: Label = $MarginContainer/Turn_label
-@onready var npc_decision_label: Label = $MarginContainer/npc_decision_label
-@onready var round_result_label: Label = $MarginContainer/round_result_label
-@onready var next_turn_button: Button = $MarginContainer/Button_Next_Turn
-@onready var show_end_result_button: Button = $MarginContainer/Button_show_end_result
+@onready var hand: ColorRect = $Hand
+@onready var popup: PopupPanel = $PopupPanel
+@onready var dice_result: Label = $Dice_result
+@onready var roll_button: Button = $Button_Roll
+@onready var turn_label: Label = $Turn_label
+@onready var npc_decision_label: Label = $npc_decision_label
+@onready var round_result_label: Label = $round_result_label
+@onready var next_turn_button: Button = $Button_Next_Turn
+@onready var show_end_result_button: Button = $Button_show_end_result
 
 
 enum Turn { PLAYER, NPC }
@@ -45,7 +45,7 @@ func start_nostra(npc_name: String, difficulty: int):
 	turn_label.text = ""
 	hand.allowed_to_interact = false
 	hand.on_card_dbl_click = Callable(self, "show_card_popup")
-	$MarginContainer/Enemy_Label.text = "You play against: " + npc_name
+	$Enemy_Label.text = "You play against: " + npc_name
 
 	var full_deck = deck_manager.get_deck()
 	full_deck.shuffle()
@@ -140,10 +140,13 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 		attacker_card_data = card_data
 		attacker_decision = decision
 		if current_defender == "NPC":
+			remove_card_from_player_hand(card_data.id)  # HIER
 			respond_npc()
 	else:
 		defender_card_data = card_data
+		remove_card_from_player_hand(card_data.id)  # HIER
 		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
+
 
 func resolve_round(card1: CardData, card2: CardData, decision1: String, decision2: String):
 	npc_decision_label.hide()
@@ -191,11 +194,12 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 	round_result_label.show()
 	round_just_ended = true
 
-	draw_cards_if_possible()
-	await get_tree().create_timer(0.2).timeout
-
 	var player_empty = player_hand.is_empty() and player_deck.is_empty()
 	var npc_empty = npc_hand.is_empty() and npc_deck.is_empty()
+	print(player_empty)
+	print(npc_empty)
+	print(player_hand)
+	print(npc_hand)
 	
 	if player_empty and npc_empty:
 		next_turn_button.hide()
@@ -217,6 +221,7 @@ func _on_button_next_turn_pressed():
 	round_result_label.hide()
 	next_turn_button.hide()
 	round_just_ended = false
+	draw_cards_if_possible()
 	next_turn()
 
 func _on_button_show_end_result_pressed():
@@ -262,6 +267,8 @@ func remove_card_from_player_hand(card_id: int):
 			player_hand = player_hand.filter(func(c): return c.id != card_id)
 			card.reparent(get_tree().root)
 			card.queue_free()
+			await get_tree().process_frame
+			hand._update_cards()
 			break
 
 func draw_cards_if_possible():
@@ -280,7 +287,6 @@ func _on_older_pressed() -> void:
 		hand.allowed_to_interact = false
 		evaluate_round("Spieler", selected_popup_card, "älter")
 		npc_decision_label.hide()
-		remove_card_from_player_hand(selected_popup_card.id)
 
 func _on_younger_pressed() -> void:
 	if selected_popup_card:
@@ -288,4 +294,3 @@ func _on_younger_pressed() -> void:
 		hand.allowed_to_interact = false
 		evaluate_round("Spieler", selected_popup_card, "jünger")
 		npc_decision_label.hide()
-		remove_card_from_player_hand(selected_popup_card.id)

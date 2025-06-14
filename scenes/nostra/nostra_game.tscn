@@ -17,91 +17,140 @@ point_count = 3
 [node name="Nostra_Game" type="CanvasLayer"]
 script = ExtResource("1_ddfj3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.234023, 0.18882, 0.0760692, 1)
 
-[node name="ColorRect_Background" type="ColorRect" parent="MarginContainer"]
-layout_mode = 2
-color = Color(0.353308, 0.2695, 0.395739, 1)
-
-[node name="Heading_Label" type="Label" parent="MarginContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("1_8dttg")
-theme_override_font_sizes/font_size = 32
-text = "NostraGame"
-
-[node name="Enemy_Label" type="Label" parent="MarginContainer"]
-layout_mode = 2
+[node name="Enemy_Label" type="Label" parent="."]
+offset_right = 202.0
+offset_bottom = 16.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "You play against"
 
-[node name="Turn_label" type="Label" parent="MarginContainer"]
-layout_mode = 2
+[node name="Turn_label" type="Label" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_right = 182.0
+offset_bottom = 8.0
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("1_8dttg")
 text = "Du bist dran!"
 
-[node name="Dice_result" type="Label" parent="MarginContainer"]
-layout_mode = 2
+[node name="Dice_result" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -11.5
+offset_right = 0.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 
-[node name="npc_decision_label" type="Label" parent="MarginContainer"]
+[node name="npc_decision_label" type="Label" parent="."]
 visible = false
-layout_mode = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -8.0
+offset_right = 117.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_8dttg")
 text = "Der Gegner sagt:"
 
-[node name="round_result_label" type="Label" parent="MarginContainer"]
+[node name="round_result_label" type="Label" parent="."]
 visible = false
-layout_mode = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -8.0
+offset_right = 117.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("1_8dttg")
 text = "Der Gegner sagt:"
 
-[node name="Button_Roll" type="Button" parent="MarginContainer"]
-layout_mode = 2
+[node name="Button_Roll" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -12.0
+offset_right = 52.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Würfeln"
 
-[node name="Button_Back" type="Button" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("2_ddfj3")
-text = "Back"
-
-[node name="Button_show_end_result" type="Button" parent="MarginContainer"]
+[node name="Button_show_end_result" type="Button" parent="."]
 visible = false
-layout_mode = 2
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Zeige Ergebnis"
 
-[node name="Button_Next_Turn" type="Button" parent="MarginContainer"]
+[node name="Button_Next_Turn" type="Button" parent="."]
 visible = false
-layout_mode = 2
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Nächste Runde"
 
-[node name="Hand" type="ColorRect" parent="MarginContainer"]
+[node name="Hand" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(600, 180)
-layout_mode = 2
+offset_left = 660.0
+offset_top = 900.0
+offset_right = 1260.0
+offset_bottom = 1080.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 color = Color(1, 1, 1, 0)
@@ -109,11 +158,11 @@ script = ExtResource("4_a0bb1")
 hand_curve = SubResource("Curve_a0bb1")
 rotation_curve = SubResource("Curve_gk84w")
 
-[node name="PopupPanel" type="PopupPanel" parent="MarginContainer"]
+[node name="PopupPanel" type="PopupPanel" parent="."]
 initial_position = 2
 size = Vector2i(301, 100)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PopupPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupPanel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -124,21 +173,20 @@ offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Older" type="Button" parent="MarginContainer/PopupPanel/HBoxContainer"]
+[node name="Older" type="Button" parent="PopupPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Älter"
 
-[node name="Younger" type="Button" parent="MarginContainer/PopupPanel/HBoxContainer"]
+[node name="Younger" type="Button" parent="PopupPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_ddfj3")
 text = "Jünger"
 
-[connection signal="pressed" from="MarginContainer/Button_Roll" to="." method="_on_button_roll_pressed"]
-[connection signal="pressed" from="MarginContainer/Button_Back" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="MarginContainer/Button_show_end_result" to="." method="_on_button_show_end_result_pressed"]
-[connection signal="pressed" from="MarginContainer/Button_Next_Turn" to="." method="_on_button_next_turn_pressed"]
-[connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Older" to="." method="_on_older_pressed"]
-[connection signal="pressed" from="MarginContainer/PopupPanel/HBoxContainer/Younger" to="." method="_on_younger_pressed"]
+[connection signal="pressed" from="Button_Roll" to="." method="_on_button_roll_pressed"]
+[connection signal="pressed" from="Button_show_end_result" to="." method="_on_button_show_end_result_pressed"]
+[connection signal="pressed" from="Button_Next_Turn" to="." method="_on_button_next_turn_pressed"]
+[connection signal="pressed" from="PopupPanel/HBoxContainer/Older" to="." method="_on_older_pressed"]
+[connection signal="pressed" from="PopupPanel/HBoxContainer/Younger" to="." method="_on_younger_pressed"]

@@ -1,8 +1,8 @@
-res://scenes/nostra/nostra_game.tscn
-res://shader/card.gdshader
-res://scripts/nostra/nostra_game.gd
 res://scenes/main.tscn
+res://shader/card.gdshader
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
+res://scenes/nostra/nostra_game.tscn
 res://scenes/nostra/card.tscn
+res://scripts/nostra/nostra_game.gd
