@@ -40,13 +40,16 @@ var npc_discard_pile: Array[CardData] = []
 
 var round_just_ended := false
 
-func start_nostra(npc_name: String, difficulty: int):
+func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D):
 	ai.difficulty = difficulty
 	turn_label.text = ""
 	hand.allowed_to_interact = false
 	hand.on_card_dbl_click = Callable(self, "show_card_popup")
-	$Enemy_Label.text = "You play against: " + npc_name
-
+	$Enemy_Info/VBoxContainer/Enemy_Name.text = npc_name
+	$Enemy_Info/Enemy_Portrait.texture = npc_portrait
+	$Player_Info/VBoxContainer/Player_Name.text = "Du"
+	$Player_Info/Player_Portrait.texture = npc_portrait
+	
 	var full_deck = deck_manager.get_deck()
 	full_deck.shuffle()
 	var full_game_deck = full_deck.slice(0, 24)

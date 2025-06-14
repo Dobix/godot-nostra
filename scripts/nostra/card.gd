@@ -15,6 +15,7 @@ var selected = false
 func _ready() -> void:
 	texture_rect.texture = image
 
+
 func get_scaled_size(hand_size: Vector2) -> Vector2:
 	var scale_factor := 0.9  # 90 % der Höhe
 	var card_height := hand_size.y * scale_factor

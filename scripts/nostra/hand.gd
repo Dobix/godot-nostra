@@ -4,6 +4,8 @@ extends ColorRect
 const CARD = preload("res://scenes/nostra/card.tscn")
 var selected_card: Card = null
 
+@export var is_enemy := false
+
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
 

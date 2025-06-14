@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cundixctlwxji"]
+[gd_scene load_steps=8 format=3 uid="uid://cundixctlwxji"]
 
 [ext_resource type="FontFile" uid="uid://neu5rnvmfq5t" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_8dttg"]
 [ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://scripts/nostra/nostra_game.gd" id="1_ddfj3"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_ddfj3"]
 [ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://scripts/nostra/hand.gd" id="4_a0bb1"]
+[ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="5_gk84w"]
 
 [sub_resource type="Curve" id="Curve_a0bb1"]
 _data = [Vector2(0, 0), 0.0, 6.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
@@ -25,13 +26,70 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.234023, 0.18882, 0.0760692, 1)
 
-[node name="Enemy_Label" type="Label" parent="."]
-offset_right = 202.0
-offset_bottom = 16.0
+[node name="Enemy_Info" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 300)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Enemy_Portrait" type="TextureRect" parent="Enemy_Info"]
+layout_mode = 2
+texture = ExtResource("5_gk84w")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Enemy_Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Enemy_Name" type="Label" parent="Enemy_Info/VBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_fonts/font = ExtResource("2_ddfj3")
-text = "You play against"
+theme_override_font_sizes/font_size = 32
+text = "Gegner"
+
+[node name="Enemy_Score" type="Label" parent="Enemy_Info/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ddfj3")
+theme_override_font_sizes/font_size = 32
+text = "51/54"
+
+[node name="Player_Info" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 300)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -453.0
+offset_top = -300.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Player_Info"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Player_Name" type="Label" parent="Player_Info/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_ddfj3")
+theme_override_font_sizes/font_size = 32
+text = "Du"
+
+[node name="Player_Score" type="Label" parent="Player_Info/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ddfj3")
+theme_override_font_sizes/font_size = 32
+text = "51/54"
+
+[node name="Player_Portrait" type="TextureRect" parent="Player_Info"]
+layout_mode = 2
+texture = ExtResource("5_gk84w")
+expand_mode = 3
 
 [node name="Turn_label" type="Label" parent="."]
 anchors_preset = 4
@@ -147,10 +205,16 @@ text = "Nächste Runde"
 
 [node name="Hand" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(600, 180)
-offset_left = 660.0
-offset_top = 900.0
-offset_right = 1260.0
-offset_bottom = 1080.0
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -180.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 color = Color(1, 1, 1, 0)
