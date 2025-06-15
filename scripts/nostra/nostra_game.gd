@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
 @onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
 @onready var score_handler = preload("res://scripts/nostra/nostra_score_handler.gd").new()
+@onready var dice_handler = preload("res://scripts/nostra/nostra_dice_handler.gd").new()
 
 @onready var hand: ColorRect = $Hand
 @onready var enemy_hand: ColorRect = $Enemy_Hand
@@ -12,15 +13,12 @@ extends CanvasLayer
 @onready var turn_label: Label = $Turn_label
 @onready var npc_decision_label: Label = $npc_decision_label
 @onready var round_result_label: Label = $round_result_label
-@onready var next_turn_button: Button = $Button_Next_Turn
-@onready var show_end_result_button: Button = $Button_show_end_result
+@onready var skip_timer: Button = $Button_Skip_Timer
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
+enum game_result { PLAYER, NPC, DRAW }
 var round_active := false
-
-var player_roll := 0
-var npc_roll := 0
 
 var player_deck: Array[CardData] = []
 var npc_deck: Array[CardData] = []
@@ -60,6 +58,7 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, wi
 	npc_deck.shuffle()
 	player_hand = deck_manager.draw_cards_from_deck(player_deck, 3)
 	npc_hand = deck_manager.draw_cards_from_deck(npc_deck, 3)
+	$Deck_Pile/Deck_Pile_Sum.text = str(player_deck.size())
 
 	var deck_age_sum = score_handler.sum_card_age(full_deck)
 	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_age_sum)
@@ -80,31 +79,14 @@ func show_card_popup(card_data: CardData):
 	popup.popup_centered()
 
 func _on_button_roll_pressed() -> void:
-	player_roll = randi() % 6 + 1
-	dice_result.text = "Du hast eine " + str(player_roll) + " gewürfelt."
-	roll_button.hide()
-
-	await get_tree().create_timer(1.0).timeout
-
-	npc_roll = randi() % 6 + 1
-	dice_result.text += "\nGegner würfelt eine " + str(npc_roll) + "."
-
-	await get_tree().create_timer(1.0).timeout
-
-	if player_roll > npc_roll:
-		dice_result.text += "\nDu beginnst!"
-		await get_tree().create_timer(1.5).timeout
-		dice_result.hide()
-		_start_player_turn()
-	elif npc_roll > player_roll:
-		dice_result.text += "\nGegner beginnt!"
-		await get_tree().create_timer(1.5).timeout
-		dice_result.hide()
-		_start_npc_turn()
-	else:
-		dice_result.text += "\nGleichstand! Nochmal würfeln..."
-		await get_tree().create_timer(2.0).timeout
-		roll_button.show()
+	var dice = await dice_handler.roll_dice()
+	match dice.result:
+		game_result.PLAYER:
+			print("start player")
+		game_result.NPC:
+			print("start npc")
+		game_result.DRAW:
+			print("draw")
 
 func _start_player_turn():
 	current_turn = Turn.PLAYER
@@ -204,8 +186,7 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 		else:
 			_insert_card_back(npc_deck, card1)
 			_insert_card_back(player_deck, card2)
-		next_turn_button.show()
-
+	
 	round_result_label.text = result_text
 	round_result_label.show()
 	round_just_ended = true
@@ -218,42 +199,39 @@ func add_cards_to_discard(pairs: Array[Dictionary]):
 			player_discard_pile.append(card)
 		elif who == "NPC":
 			npc_discard_pile.append(card)
-	var current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
+	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
 	update_score_labels(current_scores.player, current_scores.npc)
-	check_gameover(current_scores, needed_scores)
+	check_gameover()
 
 
-func check_gameover(current_scores, needed_scores):
+func check_gameover():
 	if current_scores.player >= needed_scores.player and current_scores.npc < needed_scores.npc:
-		handle_gameover("player")
+		handle_gameover(game_result.PLAYER)
 	elif current_scores.npc >= needed_scores.npc and current_scores.player < needed_scores.player:
-		handle_gameover("npc")
+		handle_gameover(game_result.NPC)
 	elif current_scores.npc >= needed_scores.npc and current_scores.player >= needed_scores.player:
-		handle_gameover("draw")
+		handle_gameover(game_result.DRAW)
 	else:
-		next_turn_button.show()
+		await get_tree().create_timer(3.0).timeout
+		next_turn()
 
-func handle_gameover(winner):
-	match winner:
-		"player":
+func handle_gameover(result):
+	match result:
+		game_result.PLAYER:
 			print("player won")
-		"npc":
+		game_result.NPC:
 			print("npc won")
-		"draw":
+		game_result.DRAW:
 			print("draw")
 
 func _insert_card_back(deck: Array[CardData], card: CardData):
 	var index = randi() % (deck.size() + 1)
 	deck.insert(index, card)
-
-func _on_button_next_turn_pressed():
-	round_result_label.hide()
-	next_turn_button.hide()
-	round_just_ended = false
-	draw_cards_if_possible()
-	next_turn()
 	
 func next_turn():
+	draw_cards_if_possible()
+	round_result_label.hide()
+	round_just_ended = false
 	round_active = false
 	match current_turn:
 		Turn.PLAYER:

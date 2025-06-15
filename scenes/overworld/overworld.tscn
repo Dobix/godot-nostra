@@ -25,3 +25,5 @@ win_multiplier = 1.5
 [node name="NPC2" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(204, 302)
 npc_name = "Sebi-Spin"
+difficulty = 0
+win_multiplier = 0.0

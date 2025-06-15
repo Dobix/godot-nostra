@@ -7,7 +7,7 @@ extends Area2D
 
 var can_interact := false
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if can_interact and Input.is_action_just_pressed("Interact"):
 		Main.switch_scene("nostra", npc_name, difficulty, npc_portrait, win_multiplier)
 

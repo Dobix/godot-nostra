@@ -10,3 +10,6 @@ res://scripts/nostra/nostra_score_handler.gd
 res://scripts/nostra/nostra_ui_handler.gd
 res://scripts/nostra/deck_manager.gd
 res://scripts/nostra/nostra_dice_handler.gd
+res://scripts/nostra/card.gd
+res://scripts/npc.gd
+res://scripts/player.gd

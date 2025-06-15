@@ -30,6 +30,6 @@ func _on_mouse_exited() -> void:
 	if hover_enabled:
 		anim.play("hover_out")
 
-func _on_gui_input(event: InputEvent) -> void:
+func _on_gui_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("left_click"):
 		emit_signal("card_selected", self)

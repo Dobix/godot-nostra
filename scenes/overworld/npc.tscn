@@ -31,9 +31,6 @@ radius = 43.0116
 
 [node name="NPC" type="Area2D"]
 script = ExtResource("1_hqjbo")
-npc_name = null
-difficulty = null
-win_multiplier = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(3.8147e-06, 3.8147e-06)
