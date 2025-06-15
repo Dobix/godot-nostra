@@ -1,10 +1,12 @@
 res://scenes/nostra/nostra_game.tscn
 res://shader/card.gdshader
-res://scenes/nostra/card.tscn
-res://scripts/nostra/nostra_game.gd
 res://scenes/main.tscn
 res://scenes/overworld/player.tscn
 res://scenes/overworld/npc.tscn
 res://scenes/overworld/overworld.tscn
-res://scripts/nostra/nostra_round_controller.gd
+res://scenes/nostra/card.tscn
+res://scripts/nostra/nostra_game.gd
 res://scripts/nostra/nostra_score_handler.gd
+res://scripts/nostra/nostra_ui_handler.gd
+res://scripts/nostra/deck_manager.gd
+res://scripts/nostra/nostra_dice_handler.gd
