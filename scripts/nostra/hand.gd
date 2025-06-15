@@ -17,24 +17,6 @@ var selected_card: Card = null
 
 @export var allowed_to_interact := false
 
-
-func _ready() -> void:
-	_update_hand_size()
-
-func _notification(what):
-	if what == NOTIFICATION_RESIZED:
-		_update_hand_size()
-		_update_cards()
-		
-
-func _update_hand_size() -> void:
-	var screen_size = get_viewport().get_visible_rect().size
-	size = Vector2(screen_size.x * 0.50, screen_size.y * 0.30)
-	position = Vector2(
-		(screen_size.x - size.x) / 2,
-		screen_size.y - size.y
-	)
-
 func draw_card(card_data: CardData) -> void:
 	var new_card = CARD.instantiate()
 	new_card.image = load(card_data.image_path)

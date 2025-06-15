@@ -18,8 +18,7 @@ func _ready() -> void:
 
 
 func get_scaled_size(hand_size: Vector2) -> Vector2:
-	var scale_factor := 0.9  # 90 % der Höhe
-	var card_height := hand_size.y * scale_factor
+	var card_height := hand_size.y
 	var aspect_ratio := 120.0 / 180.0  # original width / height
 	return Vector2(card_height * aspect_ratio, card_height)
 

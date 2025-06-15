@@ -39,6 +39,7 @@ var attacker_decision: String
 
 var player_discard_pile: Array[CardData] = []
 var npc_discard_pile: Array[CardData] = []
+var discard
 
 var round_just_ended := false
 
@@ -285,7 +286,9 @@ func draw_cards_if_possible():
 		var card_data: CardData = player_deck.pop_front()
 		player_hand.append(card_data)
 		hand.draw_card(card_data)
-
+		$Deck_Pile/Deck_Pile_Sum.text = str(player_deck.size())
+		print(player_deck.size())
+		
 	if not npc_deck.is_empty():
 		var card_data: CardData = npc_deck.pop_front()
 		npc_hand.append(card_data)
