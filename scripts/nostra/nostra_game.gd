@@ -82,17 +82,20 @@ func show_card_popup(card_data: CardData):
 func _on_button_roll_pressed() -> void:
 	var dice = dice_game.instantiate()
 	add_child(dice)
-	dice.connect("dice_finished", self._on_dice_dice_finished)
+	dice.connect("dice_finished", Callable(self, "_on_dice_dice_finished").bind(dice))
 	roll_button.hide()
 
-func _on_dice_dice_finished(result: Variant) -> void:
+func _on_dice_dice_finished(result: Variant, dice_node: Node) -> void:
 	match result:
 		game_result.PLAYER:
 			print("start player")
+			dice_node.queue_free()
 		game_result.NPC:
 			print("start npc")
+			dice_node.queue_free()
 		game_result.DRAW:
 			print("draw")
+			dice_node.queue_free()
 			roll_button.show()
 
 func _start_player_turn():
