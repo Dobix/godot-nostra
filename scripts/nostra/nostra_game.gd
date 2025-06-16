@@ -3,7 +3,8 @@ extends CanvasLayer
 @onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
 @onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
 @onready var score_handler = preload("res://scripts/nostra/nostra_score_handler.gd").new()
-@onready var dice_handler = preload("res://scripts/nostra/nostra_dice_handler.gd").new()
+
+const dice_game = preload("res://scenes/nostra/dice_game.tscn")
 
 @onready var hand: ColorRect = $Hand
 @onready var enemy_hand: ColorRect = $Enemy_Hand
@@ -79,14 +80,20 @@ func show_card_popup(card_data: CardData):
 	popup.popup_centered()
 
 func _on_button_roll_pressed() -> void:
-	var dice = await dice_handler.roll_dice()
-	match dice.result:
+	var dice = dice_game.instantiate()
+	add_child(dice)
+	dice.connect("dice_finished", self._on_dice_dice_finished)
+	roll_button.hide()
+
+func _on_dice_dice_finished(result: Variant) -> void:
+	match result:
 		game_result.PLAYER:
 			print("start player")
 		game_result.NPC:
 			print("start npc")
 		game_result.DRAW:
 			print("draw")
+			roll_button.show()
 
 func _start_player_turn():
 	current_turn = Turn.PLAYER

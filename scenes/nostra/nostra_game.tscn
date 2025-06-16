@@ -1,62 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://cundixctlwxji"]
+[gd_scene load_steps=12 format=3 uid="uid://cundixctlwxji"]
 
 [ext_resource type="FontFile" uid="uid://neu5rnvmfq5t" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_8dttg"]
 [ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://scripts/nostra/nostra_game.gd" id="1_ddfj3"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_ddfj3"]
 [ext_resource type="Script" uid="uid://db032qbjqbqjp" path="res://scripts/enemy_hand.gd" id="4_65yto"]
 [ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://scripts/nostra/hand.gd" id="4_a0bb1"]
-[ext_resource type="Texture2D" uid="uid://exgvvd5cwpl6" path="res://assets/nostra/nostra_dice.png" id="4_d8jua"]
 [ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="5_gk84w"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xfrxr"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(0, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4ehc5"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(16, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ct4ws"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(32, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u0toc"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(48, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_83ogg"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(64, 16, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ehxlw"]
-atlas = ExtResource("4_d8jua")
-region = Rect2(80, 16, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_rsh3k"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xfrxr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4ehc5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ct4ws")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u0toc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_83ogg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ehxlw")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="Curve" id="Curve_65yto"]
 _data = [Vector2(0, 1), 0.0, -4.30596, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 4.47323, 0.0, 0, 0]
@@ -159,26 +108,6 @@ text = "51/54"
 layout_mode = 2
 texture = ExtResource("5_gk84w")
 expand_mode = 3
-
-[node name="Dice" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Dice"]
-position = Vector2(20, 20)
-scale = Vector2(8.625, 8.625)
-sprite_frames = SubResource("SpriteFrames_rsh3k")
-frame_progress = 0.774284
 
 [node name="Button_Roll" type="Button" parent="."]
 anchors_preset = -1
