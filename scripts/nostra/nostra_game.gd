@@ -10,11 +10,9 @@ const dice_game = preload("res://scenes/nostra/dice_game.tscn")
 @onready var enemy_hand: ColorRect = $Enemy_Hand
 @onready var popup: PopupPanel = $PopupPanel
 @onready var dice_result: Label = $Dice_result
-@onready var roll_button: Button = $Button_Roll
 @onready var turn_label: Label = $Turn_label
 @onready var npc_decision_label: Label = $npc_decision_label
 @onready var round_result_label: Label = $round_result_label
-@onready var skip_timer: Button = $Button_Skip_Timer
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -63,53 +61,71 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, wi
 
 	var deck_age_sum = score_handler.sum_card_age(full_deck)
 	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_age_sum)
+	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
 
-	update_score_labels(0, 0)
+	update_score_labels()
 
 	for card_data in player_hand:
 		hand.draw_card(card_data)
 	for card_data in npc_hand:
 		enemy_hand.draw_card(card_data)
+		
+	var dice = dice_game.instantiate()
+	add_child(dice)
+	dice.start_dice_round("round_start")
+	dice.connect("round_start_dice_finished", Callable(self, "_on_round_start_dice_finished").bind(dice))
 
-func update_score_labels(player_score: int, npc_score: int):
-	$Player_Info/VBoxContainer/Player_Score.text = str(player_score) + "/" + str(needed_scores.player)
-	$Enemy_Info/VBoxContainer/Enemy_Score.text = str(npc_score) + "/" + str(needed_scores.npc)
+func update_score_labels():
+	$Player_Info/VBoxContainer/Player_Score.text = str(current_scores.player) + "/" + str(needed_scores.player)
+	$Enemy_Info/VBoxContainer/Enemy_Score.text = str(current_scores.npc) + "/" + str(needed_scores.npc)
 
 func show_card_popup(card_data: CardData):
 	selected_popup_card = card_data
 	popup.popup_centered()
 
-func _on_button_roll_pressed() -> void:
-	var dice = dice_game.instantiate()
-	add_child(dice)
-	dice.connect("dice_finished", Callable(self, "_on_dice_dice_finished").bind(dice))
-	roll_button.hide()
-
-func _on_dice_dice_finished(result: Variant, dice_node: Node) -> void:
+func _on_round_start_dice_finished(result: Variant, dice_node: Node) -> void:
+	dice_node.queue_free()
 	match result:
 		game_result.PLAYER:
-			print("start player")
-			dice_node.queue_free()
+			_start_player_turn()
 		game_result.NPC:
-			print("start npc")
-			dice_node.queue_free()
+			_start_npc_turn()
 		game_result.DRAW:
-			print("draw")
-			dice_node.queue_free()
-			roll_button.show()
+			var dice = dice_game.instantiate()
+			add_child(dice)
+			dice.start_dice_round("round_start")
+			dice.connect("round_start_dice_finished", Callable(self, "_on_round_start_dice_finished").bind(dice))
+
+func _on_decide_winner_dice_finished(result: Variant, dice_node: Node, card1, card2) -> void:
+	match result:
+		game_result.PLAYER:
+			add_cards_to_discard([
+			{"who": "player", "card": card1},
+			{"who": "player", "card": card2}
+		])
+		game_result.NPC:
+			add_cards_to_discard([
+			{"who": "npc", "card": card1},
+			{"who": "npc", "card": card2}
+		])
+		game_result.DRAW:
+			add_cards_to_discard([
+			{"who": current_attacker, "card": card1},
+			{"who": current_defender, "card": card2}
+		])
 
 func _start_player_turn():
 	current_turn = Turn.PLAYER
-	current_attacker = "Spieler"
-	current_defender = "NPC"
+	current_attacker = "player"
+	current_defender = "npc"
 	round_active = true
 	hand.allowed_to_interact = true
 	turn_label.text = "Du bist dran"
 
 func _start_npc_turn():
 	current_turn = Turn.NPC
-	current_attacker = "NPC"
-	current_defender = "Spieler"
+	current_attacker = "npc"
+	current_defender = "player"
 	round_active = true
 	hand.allowed_to_interact = false
 	turn_label.text = "Gegner denkt …"
@@ -160,61 +176,54 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 	turn_label.text = ""
 
 	var result = score_handler.resolve_round(card1, card2, decision1, decision2)
-	var attacker_wins = result.attacker_wins
-	var defender_wins = result.defender_wins
+	var result_text = ""
 
-	var result_text = """
-		%s sagt: Meine Karte (%s) ist %s
-		%s sagt: Meine Karte (%s) ist %s
-
-		""" % [current_attacker, card1.value, decision1, current_defender, card2.value, decision2]
-
-	if attacker_wins and defender_wins:
-		result_text += "Beide hatten recht!"
+	if result.attacker_wins and result.defender_wins:
+		result_text = "Beide hatten recht!"
 		add_cards_to_discard([
 			{"who": current_attacker, "card": card1},
 			{"who": current_defender, "card": card2}
 		])
-	elif attacker_wins:
-		result_text += current_attacker + " gewinnt die Runde!"
+	elif result.attacker_wins:
+		result_text = current_attacker + " gewinnt die Runde!"
 		add_cards_to_discard([
 			{"who": current_attacker, "card": card1},
 			{"who": current_attacker, "card": card2}
 		])
 
-	elif defender_wins:
-		result_text += current_defender + " gewinnt die Runde!"
+	elif result.defender_wins:
+		result_text = current_defender + " gewinnt die Runde!"
 		add_cards_to_discard([
 			{"who": current_defender, "card": card1},
 			{"who": current_defender, "card": card2}
 		])
 	else:
-		result_text += "Niemand hat recht!"
-		if current_attacker == "Spieler":
-			_insert_card_back(player_deck, card1)
-			_insert_card_back(npc_deck, card2)
-		else:
-			_insert_card_back(npc_deck, card1)
-			_insert_card_back(player_deck, card2)
-	
+		result_text = "Niemand hat recht!"
+		await get_tree().create_timer(2.0).timeout
+		result_text = ""
+		var dice = dice_game.instantiate()
+		add_child(dice)
+		dice.start_dice_round("decide_winner")
+		dice.connect("decide_winner_dice_finished", Callable(self, "_on_decide_winner_dice_finished").bind(dice, card1, card2))
+
 	round_result_label.text = result_text
 	round_result_label.show()
 	round_just_ended = true
+
 
 func add_cards_to_discard(pairs: Array[Dictionary]):
 	for entry in pairs:
 		var who = entry["who"]
 		var card = entry["card"]
-		if who == "Spieler":
+		if who == "player":
 			player_discard_pile.append(card)
-		elif who == "NPC":
+		elif who == "npc":
 			npc_discard_pile.append(card)
-	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
-	update_score_labels(current_scores.player, current_scores.npc)
 	check_gameover()
 
-
 func check_gameover():
+	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
+	update_score_labels()
 	if current_scores.player >= needed_scores.player and current_scores.npc < needed_scores.npc:
 		handle_gameover(game_result.PLAYER)
 	elif current_scores.npc >= needed_scores.npc and current_scores.player < needed_scores.player:

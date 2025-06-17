@@ -1,3 +1,5 @@
+Button
+Timer
 Label
 AnimationPlayer
 AnimationTree
@@ -11,4 +13,3 @@ Panel
 HBoxContainer
 PanelContainer
 ColorRect
-TextureRect
