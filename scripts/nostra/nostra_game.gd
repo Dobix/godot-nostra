@@ -59,8 +59,8 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, wi
 	npc_hand = deck_manager.draw_cards_from_deck(npc_deck, 3)
 	$Deck_Pile/Deck_Pile_Sum.text = str(player_deck.size())
 
-	var deck_age_sum = score_handler.sum_card_age(full_deck)
-	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_age_sum)
+	var deck_value_sum = score_handler.sum_card_value(full_deck)
+	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_value_sum)
 	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
 
 	update_score_labels()
@@ -280,16 +280,16 @@ func draw_cards_if_possible():
 		npc_hand.append(card_data)
 		enemy_hand.draw_card(card_data)
 
-func _on_older_pressed() -> void:
+func _on_higher_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("player", selected_popup_card, "älter")
+		evaluate_round("player", selected_popup_card, "higher")
 		npc_decision_label.hide()
 
-func _on_younger_pressed() -> void:
+func _on_lower_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("player", selected_popup_card, "jünger")
+		evaluate_round("player", selected_popup_card, "lower")
 		npc_decision_label.hide()

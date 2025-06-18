@@ -31,16 +31,11 @@ func choose_defense_card(hand: Array[CardData]) -> Dictionary:
 
 func _easy_strategy(hand: Array[CardData]) -> Dictionary:
 	var card = hand[0] if hand.size() > 0 else null
-	var decision = ["älter", "jünger"].pick_random()
-	print("diff: easy")
+	var decision = ["higher", "lower"].pick_random()
 	return {"card": card, "decision": decision}
 
 func _medium_strategy(hand: Array[CardData]) -> Dictionary:
-	# Platzhalter: Noch gleiche Logik wie easy
-	print("diff: medium")
 	return _easy_strategy(hand)
 
 func _hard_strategy(hand: Array[CardData]) -> Dictionary:
-	# Platzhalter: Noch gleiche Logik wie easy
-	print("diff: hard")
 	return _easy_strategy(hand)

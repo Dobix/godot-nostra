@@ -10,3 +10,5 @@ res://scripts/nostra/nostra_dice_handler.gd
 res://scripts/nostra/nostra_game.gd
 res://scripts/nostra/card_data.gd
 res://scripts/nostra/deck_manager.gd
+res://scripts/nostra/nostra_score_handler.gd
+res://scripts/nostra/nostra_ai_enemy.gd

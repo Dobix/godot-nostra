@@ -246,22 +246,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 297.0
-offset_bottom = 96.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Older" type="Button" parent="PopupPanel/HBoxContainer"]
+[node name="Higher" type="Button" parent="PopupPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_ddfj3")
-text = "Älter"
+text = "Höher"
 
-[node name="Younger" type="Button" parent="PopupPanel/HBoxContainer"]
+[node name="Lower" type="Button" parent="PopupPanel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_ddfj3")
-text = "Jünger"
+text = "Niedriger"
 
-[connection signal="pressed" from="PopupPanel/HBoxContainer/Older" to="." method="_on_older_pressed"]
-[connection signal="pressed" from="PopupPanel/HBoxContainer/Younger" to="." method="_on_younger_pressed"]
+[connection signal="pressed" from="PopupPanel/HBoxContainer/Higher" to="." method="_on_higher_pressed"]
+[connection signal="pressed" from="PopupPanel/HBoxContainer/Lower" to="." method="_on_lower_pressed"]

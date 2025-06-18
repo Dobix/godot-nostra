@@ -2,10 +2,10 @@ var all_cards: Array[CardData] = []
 
 func _ready():
 	all_cards = [
-		CardData.new("Lucca", CardData.CardType.BRUDER, 1, 1, "blue", "res://assets/nostra/cards/01-blue.jpg", 1),
-		CardData.new("Lucca", CardData.CardType.BRUDER, 1, 2, "green", "res://assets/nostra/cards/01-green.jpg", 2),
-		CardData.new("Vincente", CardData.CardType.BRUDER, 2, 3, "blue", "res://assets/nostra/cards/02-blue.jpg", 3),
-		CardData.new("Vincente", CardData.CardType.BRUDER, 2, 4, "green", "res://assets/nostra/cards/02-green.jpg", 4),
+		CardData.new("Lucca", CardData.CardType.BRUDER, 1, 1, "res://assets/nostra/cards/01-blue.jpg", 1),
+		CardData.new("Lucca", CardData.CardType.BRUDER, 1, 2, "res://assets/nostra/cards/01-green.jpg", 2),
+		CardData.new("Vincente", CardData.CardType.BRUDER, 2, 3, "res://assets/nostra/cards/02-blue.jpg", 3),
+		CardData.new("Vincente", CardData.CardType.BRUDER, 2, 4, "res://assets/nostra/cards/02-green.jpg", 4),
 		#CardData.new("Ricardo", CardData.CardType.BRUDER, 3, 5, "blue", "res://assets/nostra/cards/03-blue.jpg", 5),
 		#CardData.new("Ricardo", CardData.CardType.BRUDER, 3, 6, "green", "res://assets/nostra/cards/03-green.jpg", 6),
 		#CardData.new("Emilio", CardData.CardType.BRUDER, 4, 7, "blue", "res://assets/nostra/cards/04-blue.jpg", 7),
