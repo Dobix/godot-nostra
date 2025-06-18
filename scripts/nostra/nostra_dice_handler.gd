@@ -9,11 +9,14 @@ var npc_result
 @onready var result_label: Label = $Result_label
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var start_button: Button = $Start_Button
 
 signal round_start_dice_finished(result)
 signal decide_winner_dice_finished(result)
 
 func start_dice_round(purpose: String) -> void:
+	await start_button.pressed
+	start_button.hide()
 	player_roll()
 	await get_tree().create_timer(2.0).timeout
 	npc_roll()
@@ -21,21 +24,31 @@ func start_dice_round(purpose: String) -> void:
 
 	if player_result > npc_result:
 		dice_result = Result.PLAYER
-		result_label.text = "Du beginnst!"
 	elif npc_result > player_result:
 		dice_result = Result.NPC
-		result_label.text = "Gegner beginnt!"
 	else:
 		dice_result = Result.DRAW
-		result_label.text = "Unentschieden! Nochmal würfeln!"
-
-	await get_tree().create_timer(1.0).timeout
-	result_label.text = ""
-
+		
 	match purpose:
 		"round_start":
+			match dice_result:
+				Result.PLAYER:
+					result_label.text = "Du beginnst!"
+				Result.NPC:
+					result_label.text = "Gegner beginnt!"
+				Result.DRAW:
+					result_label.text = "Unentschieden! Nochmal würfeln!"
+			await get_tree().create_timer(2.0).timeout
 			emit_signal("round_start_dice_finished", dice_result)
 		"decide_winner":
+			match dice_result:
+				Result.PLAYER:
+					result_label.text = "Du bekommst die Karten!"
+				Result.NPC:
+					result_label.text = "Der Gegner bekommt die Karten!"
+				Result.DRAW:
+					result_label.text = "Unentschieden! Beide bekommen ihre Karte!"
+			await get_tree().create_timer(2.0).timeout
 			emit_signal("decide_winner_dice_finished", dice_result)
 
 

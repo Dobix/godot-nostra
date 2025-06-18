@@ -97,6 +97,7 @@ func _on_round_start_dice_finished(result: Variant, dice_node: Node) -> void:
 			dice.connect("round_start_dice_finished", Callable(self, "_on_round_start_dice_finished").bind(dice))
 
 func _on_decide_winner_dice_finished(result: Variant, dice_node: Node, card1, card2) -> void:
+	dice_node.queue_free()
 	match result:
 		game_result.PLAYER:
 			add_cards_to_discard([
@@ -163,7 +164,7 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 	if player == current_attacker:
 		attacker_card_data = card_data
 		attacker_decision = decision
-		if current_defender == "NPC":
+		if current_defender == "npc":
 			remove_card_from_player_hand(card_data.id)
 			respond_npc()
 	else:
@@ -176,37 +177,36 @@ func resolve_round(card1: CardData, card2: CardData, decision1: String, decision
 	turn_label.text = ""
 
 	var result = score_handler.resolve_round(card1, card2, decision1, decision2)
-	var result_text = ""
 
 	if result.attacker_wins and result.defender_wins:
-		result_text = "Beide hatten recht!"
+		round_result_label.text = "Beide hatten recht!"
 		add_cards_to_discard([
 			{"who": current_attacker, "card": card1},
 			{"who": current_defender, "card": card2}
 		])
 	elif result.attacker_wins:
-		result_text = current_attacker + " gewinnt die Runde!"
+		round_result_label.text = current_attacker + " gewinnt die Runde!"
 		add_cards_to_discard([
 			{"who": current_attacker, "card": card1},
 			{"who": current_attacker, "card": card2}
 		])
 
 	elif result.defender_wins:
-		result_text = current_defender + " gewinnt die Runde!"
+		round_result_label.text = current_defender + " gewinnt die Runde!"
 		add_cards_to_discard([
 			{"who": current_defender, "card": card1},
 			{"who": current_defender, "card": card2}
 		])
 	else:
-		result_text = "Niemand hat recht!"
+		round_result_label.text = "Niemand hat recht! Würfel den Gewinner!"
+		round_result_label.show()
 		await get_tree().create_timer(2.0).timeout
-		result_text = ""
+		round_result_label.text = ""
 		var dice = dice_game.instantiate()
 		add_child(dice)
 		dice.start_dice_round("decide_winner")
 		dice.connect("decide_winner_dice_finished", Callable(self, "_on_decide_winner_dice_finished").bind(dice, card1, card2))
 
-	round_result_label.text = result_text
 	round_result_label.show()
 	round_just_ended = true
 
@@ -284,12 +284,12 @@ func _on_older_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("Spieler", selected_popup_card, "älter")
+		evaluate_round("player", selected_popup_card, "älter")
 		npc_decision_label.hide()
 
 func _on_younger_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
-		evaluate_round("Spieler", selected_popup_card, "jünger")
+		evaluate_round("player", selected_popup_card, "jünger")
 		npc_decision_label.hide()

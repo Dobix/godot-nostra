@@ -200,3 +200,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("3_dqxqw")
 horizontal_alignment = 1
+
+[node name="Start_Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = -52.0
+offset_top = 66.305
+offset_right = 52.0
+offset_bottom = 90.305
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_dqxqw")
+text = "Würfeln"
+
+[connection signal="pressed" from="Start_Button" to="." method="_on_button_pressed"]
