@@ -13,6 +13,7 @@ const dice_game = preload("res://scenes/nostra/dice_game.tscn")
 @onready var turn_label: Label = $Turn_label
 @onready var npc_decision_label: Label = $npc_decision_label
 @onready var round_result_label: Label = $round_result_label
+@onready var card_display: HBoxContainer = $Card_Display
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -138,6 +139,7 @@ func _start_npc_turn():
 	attacker_decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_data.id)
 	enemy_hand.discard_card()
+	card_display.add_card(attacker_card_data)
 
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
@@ -156,6 +158,7 @@ func respond_npc():
 	var decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != defender_card_data.id)
 	enemy_hand.discard_card()
+	card_display.add_card(defender_card_data)
 
 	await get_tree().create_timer(1.5).timeout
 	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
@@ -166,10 +169,12 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 		attacker_decision = decision
 		if current_defender == "npc":
 			remove_card_from_player_hand(card_data.id)
+			card_display.add_card(card_data)
 			respond_npc()
 	else:
 		defender_card_data = card_data
 		remove_card_from_player_hand(card_data.id)
+		card_display.add_card(card_data)
 		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
 func resolve_round(card1: CardData, card2: CardData, decision1: String, decision2: String):

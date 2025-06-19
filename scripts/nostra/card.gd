@@ -8,14 +8,13 @@ extends Panel
 @onready var border: ColorRect = $Border
 
 var card_data: CardData = null
+var face_up := true
+var selected = false
 
 signal card_selected(card: Card)
 
-var selected = false
-
 func _ready() -> void:
 	texture_rect.texture = image
-
 
 func get_scaled_size(hand_size: Vector2) -> Vector2:
 	var card_height := hand_size.y

@@ -1,3 +1,4 @@
+HBoxContainer
 Button
 Timer
 Label
@@ -10,5 +11,4 @@ CenterContainer
 AnimatedSprite2D
 Node2D
 Panel
-HBoxContainer
 PanelContainer
