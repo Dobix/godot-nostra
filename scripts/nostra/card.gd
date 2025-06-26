@@ -8,7 +8,6 @@ extends Panel
 @onready var border: ColorRect = $Border
 
 var card_data: CardData = null
-var face_up := true
 var selected = false
 
 signal card_selected(card: Card)
@@ -20,6 +19,9 @@ func get_scaled_size(hand_size: Vector2) -> Vector2:
 	var card_height := hand_size.y
 	var aspect_ratio := 120.0 / 180.0  # original width / height
 	return Vector2(card_height * aspect_ratio, card_height)
+
+func update_image():
+	texture_rect.texture = image
 
 func _on_mouse_entered() -> void:
 	if hover_enabled:

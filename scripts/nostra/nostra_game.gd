@@ -178,6 +178,7 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
 func resolve_round(card1: CardData, card2: CardData, decision1: String, decision2: String):
+	card_display.reveal_cards()
 	npc_decision_label.hide()
 	turn_label.text = ""
 
@@ -253,6 +254,7 @@ func _insert_card_back(deck: Array[CardData], card: CardData):
 	deck.insert(index, card)
 	
 func next_turn():
+	card_display.clear_display()
 	draw_cards_if_possible()
 	round_result_label.hide()
 	round_just_ended = false

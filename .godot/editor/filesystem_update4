@@ -6,6 +6,7 @@ res://scenes/overworld/overworld.tscn
 res://scenes/nostra/nostra_game.tscn
 res://scenes/nostra/card.tscn
 res://scenes/nostra/dice_game.tscn
-res://scripts/nostra/nostra_card_display.gd
 res://scripts/nostra/nostra_game.gd
+res://scripts/nostra/nostra_card_display.gd
 res://scripts/nostra/card.gd
+res://scripts/nostra/hand.gd

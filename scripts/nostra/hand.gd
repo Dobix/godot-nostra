@@ -19,8 +19,8 @@ var selected_card: Card = null
 
 func draw_card(card_data: CardData) -> void:
 	var new_card = CARD.instantiate()
-	new_card.image = load(card_data.image_path)
 	new_card.card_data = card_data
+	new_card.image = load(card_data.image_path)
 	add_child(new_card)
 	new_card.connect("card_selected", Callable(self, "_on_card_selected"))
 	_update_cards()
