@@ -1,7 +1,7 @@
 extends HBoxContainer
 
-const BACK_IMAGE = preload("res://assets/nostra/cards/01-blue.jpg")
-const CARD = preload("res://scenes/nostra/card.tscn")
+const BACK_IMAGE = preload("res://assets/nostra/cards/Backcover.png")
+const CARD = preload("res://nostra/card.tscn")
  
 var displayed_cards: Array = []
 

@@ -1,9 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://byr2bhwtmxx3h"]
 
-[ext_resource type="Script" uid="uid://b8ogmx0n2pdjb" path="res://Game_Manager/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://b5uqhqyioch7u" path="res://scenes/overworld/overworld.tscn" id="2_sugp2"]
 
+[sub_resource type="GDScript" id="GDScript_o5qli"]
+script/source = "extends Node2D
+
+var nostra_active = false
+"
+
 [node name="Main" type="Node2D"]
-script = ExtResource("1_0wfyh")
+script = SubResource("GDScript_o5qli")
 
 [node name="Overworld" parent="." instance=ExtResource("2_sugp2")]

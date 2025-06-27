@@ -4,7 +4,7 @@ extends CanvasLayer
 @onready var ai = preload("res://nostra/nostra_ai_enemy.gd").new()
 @onready var score_handler = preload("res://nostra/nostra_score_handler.gd").new()
 
-const dice_game = preload("res://scenes/nostra/dice_game.tscn")
+const dice_game = preload("res://nostra/dice_game.tscn")
 
 @onready var hand: ColorRect = $Hand
 @onready var enemy_hand: ColorRect = $Enemy_Hand
@@ -40,6 +40,11 @@ var npc_discard_pile: Array[CardData] = []
 var round_just_ended := false
 var needed_scores
 var current_scores
+
+func _unhandled_input(event):
+	if event.is_action_pressed("close"):
+		GameManager.nostra_active = false
+		queue_free()
 
 func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, win_multiplier: float):
 	ai.difficulty = difficulty

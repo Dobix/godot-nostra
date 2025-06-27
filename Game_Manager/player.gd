@@ -7,7 +7,7 @@ func get_input():
 	velocity = input_direction * speed
 
 func _physics_process(_delta):
-	if not Main.nostra_active:
+	if not GameManager.nostra_active:
 		get_input()
 		move_and_slide()
 	else:

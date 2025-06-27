@@ -1,7 +1,7 @@
 class_name Hand
 extends ColorRect
 
-const CARD = preload("res://scenes/nostra/card.tscn")
+const CARD = preload("res://nostra/card.tscn")
 var selected_card: Card = null
 
 @export var hand_curve: Curve

@@ -3,15 +3,12 @@ extends Area2D
 @export var npc_name: String = "Kalle"
 @export var npc_portrait: Texture2D
 @export var npc_id: String
-@export var difficulty: NostraAIEnemy.Difficulty = NostraAIEnemy.Difficulty.EASY
-@export var win_multiplier: float = 1.0
 
 var can_interact := false
 
 func _process(_delta: float) -> void:
 	if can_interact and Input.is_action_just_pressed("Interact"):
 		print("interacted with base enemy")
-		Main.switch_scene("nostra", npc_name, difficulty, npc_portrait, win_multiplier)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
