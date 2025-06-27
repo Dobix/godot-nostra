@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-@onready var deck_manager = preload("res://scripts/nostra/deck_manager.gd").new()
-@onready var ai = preload("res://scripts/nostra/nostra_ai_enemy.gd").new()
-@onready var score_handler = preload("res://scripts/nostra/nostra_score_handler.gd").new()
+@onready var deck_manager = preload("res://nostra/deck_manager.gd").new()
+@onready var ai = preload("res://nostra/nostra_ai_enemy.gd").new()
+@onready var score_handler = preload("res://nostra/nostra_score_handler.gd").new()
 
 const dice_game = preload("res://scenes/nostra/dice_game.tscn")
 

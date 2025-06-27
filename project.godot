@@ -16,7 +16,8 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-Main="*res://scripts/main.gd"
+Main="*res://Game_Manager/main.gd"
+GameManager="*res://Game_Manager/game_manager.gd"
 
 [display]
 
@@ -28,8 +29,10 @@ window/stretch/aspect="expand"
 [file_customization]
 
 folder_colors={
-"res://scenes/nostra/": "purple",
-"res://scripts/nostra/": "purple"
+"res://Game_Manager/": "red",
+"res://nostra/": "purple",
+"res://npc/": "green",
+"res://scenes/nostra/": "purple"
 }
 
 [input]

@@ -1,11 +1,11 @@
 [gd_scene load_steps=13 format=3 uid="uid://cundixctlwxji"]
 
 [ext_resource type="FontFile" uid="uid://neu5rnvmfq5t" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="1_8dttg"]
-[ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://scripts/nostra/nostra_game.gd" id="1_ddfj3"]
-[ext_resource type="Script" uid="uid://ci1i72vikmnjr" path="res://scripts/nostra/nostra_card_display.gd" id="2_d8jua"]
+[ext_resource type="Script" uid="uid://cdgn1htlki2a2" path="res://nostra/nostra_game.gd" id="1_ddfj3"]
+[ext_resource type="Script" uid="uid://ci1i72vikmnjr" path="res://nostra/nostra_card_display.gd" id="2_d8jua"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="2_ddfj3"]
-[ext_resource type="Script" uid="uid://db032qbjqbqjp" path="res://scripts/nostra/enemy_hand.gd" id="4_65yto"]
-[ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://scripts/nostra/hand.gd" id="4_a0bb1"]
+[ext_resource type="Script" uid="uid://db032qbjqbqjp" path="res://nostra/enemy_hand.gd" id="4_65yto"]
+[ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://nostra/hand.gd" id="4_a0bb1"]
 [ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="5_gk84w"]
 
 [sub_resource type="Curve" id="Curve_65yto"]

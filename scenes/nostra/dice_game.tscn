@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://dv6a8e3xlr1nd"]
 
-[ext_resource type="Script" uid="uid://cqllvnpd1ai1e" path="res://scripts/nostra/nostra_dice_handler.gd" id="1_5vtfh"]
+[ext_resource type="Script" uid="uid://cqllvnpd1ai1e" path="res://nostra/nostra_dice_handler.gd" id="1_5vtfh"]
 [ext_resource type="Texture2D" uid="uid://exgvvd5cwpl6" path="res://assets/nostra/nostra_dice.png" id="2_dqxqw"]
 [ext_resource type="FontFile" uid="uid://cv8mder7avim8" path="res://assets/fonts/PixelOperator8.ttf" id="3_dqxqw"]
 
