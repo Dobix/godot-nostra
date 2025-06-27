@@ -15,3 +15,11 @@ res://nostra/nostra_game.gd
 res://nostra/nostra_card_display.gd
 res://nostra/enemy_hand.gd
 res://nostra/hand.gd
+res://main.tscn
+res://overworld/overworld.tscn
+res://Player/player_stats.gd
+res://npc/npc_data.gd
+res://npc/npc_data_enemy.gd
+res://npc/data/npc_data_enemy.gd
+res://overworld/overworld.gd
+res://Player/player_stats.tres

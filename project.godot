@@ -29,6 +29,7 @@ window/stretch/aspect="expand"
 
 folder_colors={
 "res://Game_Manager/": "red",
+"res://Player/": "blue",
 "res://nostra/": "purple",
 "res://npc/": "green"
 }

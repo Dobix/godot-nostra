@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlayerStats" load_steps=2 format=3 uid="uid://drvdqsw568xu5"]
+
+[ext_resource type="Script" uid="uid://ce5ncp8x0pt53" path="res://Player/player_stats.gd" id="1_t35kn"]
+
+[resource]
+script = ExtResource("1_t35kn")
+defeated_npc_ids = Array[String]([])
+metadata/_custom_type_script = "uid://ce5ncp8x0pt53"

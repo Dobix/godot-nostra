@@ -1,11 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5uqhqyioch7u"]
+[gd_scene load_steps=9 format=3 uid="uid://b5uqhqyioch7u"]
 
-[ext_resource type="PackedScene" uid="uid://cifgxjo7i7iby" path="res://scenes/overworld/player.tscn" id="1_2e7tg"]
-[ext_resource type="Script" uid="uid://cdos4l62u05ey" path="res://scenes/overworld/overworld.gd" id="1_b1b42"]
-[ext_resource type="Script" uid="uid://c4irsxqm8xrvb" path="res://Game_Manager/player.gd" id="2_xrble"]
+[ext_resource type="PackedScene" uid="uid://cifgxjo7i7iby" path="res://Player/player.tscn" id="1_2e7tg"]
+[ext_resource type="Script" uid="uid://cdos4l62u05ey" path="res://overworld/overworld.gd" id="1_b1b42"]
+[ext_resource type="Script" uid="uid://c4irsxqm8xrvb" path="res://Player/player.gd" id="2_xrble"]
 [ext_resource type="PackedScene" uid="uid://1al2epsmnxfj" path="res://npc/npc_base.tscn" id="3_8ogg3"]
 [ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="4_662u0"]
 [ext_resource type="PackedScene" uid="uid://dtdw5igmc4c4t" path="res://npc/npc_enemy.tscn" id="5_dhsp4"]
+[ext_resource type="Script" uid="uid://uy4o8xybg0pk" path="res://npc/data/npc_data_enemy.gd" id="6_xp5fb"]
+
+[sub_resource type="Resource" id="Resource_fysd7"]
+script = ExtResource("6_xp5fb")
+difficulty = 0
+win_multiplier = 1.5
+id = "Kalle_01"
+name = "Kalle"
+portrait = ExtResource("4_662u0")
+metadata/_custom_type_script = "uid://uy4o8xybg0pk"
 
 [node name="Overworld" type="Node2D"]
 script = ExtResource("1_b1b42")
@@ -20,14 +30,10 @@ script = ExtResource("2_xrble")
 
 [node name="NPC_enemy" parent="NPCs" instance=ExtResource("5_dhsp4")]
 position = Vector2(510, 83)
-win_multiplier = 1.5
-npc_portrait = ExtResource("4_662u0")
-npc_id = "1"
+npc_data_enemy = SubResource("Resource_fysd7")
 
 [node name="NPC" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(428, 242)
-npc_portrait = ExtResource("4_662u0")
 
 [node name="NPC2" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(204, 302)
-npc_name = "Sebi-Spin"

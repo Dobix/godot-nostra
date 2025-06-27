@@ -1,8 +1,6 @@
 extends Area2D
 
-@export var npc_name: String = "Kalle"
-@export var npc_portrait: Texture2D
-@export var npc_id: String
+var npc_data: NpcData
 
 var can_interact := false
 

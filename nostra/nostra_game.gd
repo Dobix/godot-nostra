@@ -41,20 +41,23 @@ var round_just_ended := false
 var needed_scores
 var current_scores
 
+var npc_data: EnemyNpcData
+
 func _unhandled_input(event):
 	if event.is_action_pressed("close"):
 		GameManager.nostra_active = false
 		queue_free()
 
-func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, win_multiplier: float):
-	ai.difficulty = difficulty
+func start_nostra(data: EnemyNpcData):
+	npc_data = data
+	ai.difficulty = npc_data.difficulty
 	turn_label.text = ""
 	hand.allowed_to_interact = false
 	hand.on_card_dbl_click = Callable(self, "show_card_popup")
-	$Enemy_Info/VBoxContainer/Enemy_Name.text = npc_name
-	$Enemy_Info/Enemy_Portrait.texture = npc_portrait
+	$Enemy_Info/VBoxContainer/Enemy_Name.text = npc_data.name
+	$Enemy_Info/Enemy_Portrait.texture = npc_data.portrait
 	$Player_Info/VBoxContainer/Player_Name.text = "Du"
-	$Player_Info/Player_Portrait.texture = npc_portrait
+	$Player_Info/Player_Portrait.texture = npc_data.portrait
 
 	var full_deck = deck_manager.get_deck()
 	player_deck = full_deck.duplicate()
@@ -66,7 +69,7 @@ func start_nostra(npc_name: String, difficulty: int, npc_portrait: Texture2D, wi
 	$Deck_Pile/Deck_Pile_Sum.text = str(player_deck.size())
 
 	var deck_value_sum = score_handler.sum_card_value(full_deck)
-	needed_scores = score_handler.get_needed_scores(win_multiplier, deck_value_sum)
+	needed_scores = score_handler.get_needed_scores(npc_data.win_multiplier, deck_value_sum)
 	current_scores = score_handler.get_current_scores(player_discard_pile, npc_discard_pile)
 
 	update_score_labels()
@@ -249,6 +252,9 @@ func handle_gameover(result):
 	match result:
 		game_result.PLAYER:
 			print("player won")
+			GameManager.npc_manager.mark_enemy_as_defeated(npc_data.id)
+			var defeated_enemies = GameManager.npc_manager.get_defeated_enemy_count()
+			print("Besiegte Gegner: "+str(defeated_enemies))
 		game_result.NPC:
 			print("npc won")
 		game_result.DRAW:
