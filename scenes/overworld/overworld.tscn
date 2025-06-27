@@ -18,6 +18,12 @@ script = ExtResource("2_xrble")
 
 [node name="NPCs" type="Node" parent="."]
 
+[node name="NPC_enemy" parent="NPCs" instance=ExtResource("5_dhsp4")]
+position = Vector2(510, 83)
+win_multiplier = 1.5
+npc_portrait = ExtResource("4_662u0")
+npc_id = "1"
+
 [node name="NPC" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(428, 242)
 npc_portrait = ExtResource("4_662u0")
@@ -25,10 +31,3 @@ npc_portrait = ExtResource("4_662u0")
 [node name="NPC2" parent="NPCs" instance=ExtResource("3_8ogg3")]
 position = Vector2(204, 302)
 npc_name = "Sebi-Spin"
-
-[node name="NPC_enemy" parent="NPCs" instance=ExtResource("5_dhsp4")]
-position = Vector2(510, 83)
-win_multiplier = 1.5
-difficulty = 0
-npc_portrait = ExtResource("4_662u0")
-npc_id = "1"

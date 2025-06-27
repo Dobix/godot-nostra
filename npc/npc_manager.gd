@@ -9,9 +9,7 @@ var defeated_enemy_ids: Array[String] = []
 # Dynamisch alle Gegner-NPCs im aktuellen Level erfassen
 func scan_enemies_in_overworld(root: Node):
 	all_enemy_ids.clear()
-
-	for node in root.get_children():
-		_scan_recursive(node)
+	_scan_recursive(root)
 
 func _scan_recursive(node: Node):
 	if node is NpcEnemy:
