@@ -1,11 +1,11 @@
 Panel
+Sprite2D
 HBoxContainer
 Button
 Timer
 Label
 AnimationPlayer
 AnimationTree
-Sprite2D
 Control
 VBoxContainer
 CenterContainer

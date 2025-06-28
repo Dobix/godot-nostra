@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://nostra/card/card.gd" id="1_2cfb2"]
 [ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cfb2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ar11a"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Animation" id="Animation_l0exg"]
@@ -61,27 +61,19 @@ _data = {
 }
 
 [node name="Card" type="Panel"]
-custom_minimum_size = Vector2(120, 180)
+custom_minimum_size = Vector2(130, 180)
 anchors_preset = -1
 anchor_right = 0.062
 anchor_bottom = 0.167
-offset_right = 0.959991
-offset_bottom = -0.360016
+offset_right = 10.96
+offset_bottom = -0.360001
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(60, 180)
+pivot_offset = Vector2(65, 180)
 size_flags_horizontal = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_2cfb2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ar11a")
 script = ExtResource("1_2cfb2")
-
-[node name="Border" type="ColorRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+hover_enabled = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -91,15 +83,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(60, 90)
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 layout_mode = 2
 texture = ExtResource("1_ovagr")
 expand_mode = 5
+stretch_mode = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

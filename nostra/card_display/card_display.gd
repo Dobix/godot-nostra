@@ -5,18 +5,25 @@ extends Panel
 const BACK_IMAGE = preload("res://assets/nostra/cards/Backcover.png")
 const CARD = preload("res://nostra/card/card.tscn")
 
-signal card_dropped_on_display(card: Card)
-
 var displayed_cards: Array = []
 
-func add_card(card_data: CardData):
+func add_card(card_data: CardData, is_enemy: bool = false):
 	var card = CARD.instantiate()
 	card.card_data = card_data
 	card.image = BACK_IMAGE
 	card.hover_enabled = false
 	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	card_display_grid.add_child(card)
+	if is_enemy:
+		var slot = $Card_Display_grid/Enemy_Slot
+		slot.add_child(card)
+		await get_tree().process_frame
+		card.position = slot.size / 2 - card.size / 2
+		print("added enemy card")
+	else:
+		print("added player card")
+
 	displayed_cards.append(card)
+
 
 func reveal_cards():
 	for card in displayed_cards:
@@ -31,7 +38,7 @@ func clear_display():
 # === DRAG & DROP ===
 
 func _can_drop_data(_pos: Vector2, data: Variant) -> bool:
-	return data is Card  # Nur Cards dürfen gedroppt werden
+	return data is Card
 
 func _drop_data(_pos: Vector2, data: Variant) -> void:
 	print("Karte gedroppt!")

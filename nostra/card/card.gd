@@ -5,11 +5,16 @@ extends Panel
 @export var hover_enabled: bool = true
 @onready var texture_rect: TextureRect = $MarginContainer/TextureRect
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var border: ColorRect = $Border
 
 var drag_start_position := Vector2.ZERO
 var card_data: CardData = null
 var selected = false
+
+var mouse_in: bool = false
+var is_dragging: bool = false
+var original_position: Vector2
+var card_display_ref: Panel = null
+var dragging_allowed := true
 
 signal card_selected(card: Card)
 
@@ -18,31 +23,62 @@ func _ready() -> void:
 
 func get_scaled_size(hand_size: Vector2) -> Vector2:
 	var card_height := hand_size.y
-	var aspect_ratio := 120.0 / 180.0  # original width / height
+	var aspect_ratio := 130.0 / 180.0  # original width / height
 	return Vector2(card_height * aspect_ratio, card_height)
 
 func update_image():
 	texture_rect.texture = image
 
+func _physics_process(delta: float) -> void:
+	drag_logic(delta)
+	
+func drag_logic(delta: float) -> void:
+	if not dragging_allowed:
+		"nicht dein zug"
+		return
+	if (mouse_in or is_dragging) and (GameManager.node_being_dragged == null or GameManager.node_being_dragged == self):
+		if Input.is_action_pressed("left_click"):
+			if not is_dragging:
+				original_position = position
+			global_position = lerp(global_position, get_global_mouse_position() - (size / 2.0), 22.0 * delta)
+			is_dragging = true
+			GameManager.node_being_dragged = self
+		else:
+			is_dragging = false
+			if GameManager.node_being_dragged == self:
+				GameManager.node_being_dragged = null
+
+				var mouse_pos := get_global_mouse_position()
+
+				if card_display_ref == null:
+					print("Card_Display Referenz fehlt!")
+					return
+
+				# Prüfe, ob Maus über Card_Display liegt
+				var card_display_rect := Rect2(card_display_ref.global_position, card_display_ref.size)
+
+				if card_display_rect.has_point(mouse_pos):
+					print("Karte wurde korrekt gedroppt")
+
+					# In Player_Slot verschieben
+					var player_slot := card_display_ref.get_node("Card_Display_grid/Player_Slot")
+					reparent(player_slot)
+					position = player_slot.size / 2 - size / 2
+					rotation = 0
+					hover_enabled = false
+					mouse_filter = Control.MOUSE_FILTER_IGNORE
+					emit_signal("card_selected", self)
+				else:
+					print("Zurücksnappen")
+					var tween := get_tree().create_tween()
+					tween.tween_property(self, "position", original_position, 0.2)
+
 func _on_mouse_entered() -> void:
 	if hover_enabled:
 		anim.play("hover_in")
+	mouse_in = true
 	
 func _on_mouse_exited() -> void:
 	if hover_enabled:
 		anim.play("hover_out")
-
-#func _on_gui_input(_event: InputEvent) -> void:
-	#if Input.is_action_just_pressed("left_click"):
-		#emit_signal("card_selected", self)
-		
-func _get_drag_data(_pos: Vector2) -> Variant:
-	var drag_preview = make_drag_preview()
-	set_drag_preview(drag_preview)
-	return self  # <== Das wird zur Drop-Ziel-Komponente gesendet
-
-func make_drag_preview() -> Control:
-	var preview := duplicate()
-	preview.modulate = Color(1, 1, 1, 0.6)
-	preview.scale = Vector2(0.8, 0.8)
-	return preview
+	mouse_in = false

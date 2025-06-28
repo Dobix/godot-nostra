@@ -53,7 +53,8 @@ func start_nostra(data: EnemyNpcData):
 	ai.difficulty = npc_data.difficulty
 	turn_label.text = ""
 	hand.allowed_to_interact = false
-	hand.on_card_dbl_click = Callable(self, "show_card_popup")
+	hand.set_all_cards_interactable(false)
+	hand.on_card_played = Callable(self, "show_card_popup")
 	$Enemy_Info/VBoxContainer/Enemy_Name.text = npc_data.name
 	$Enemy_Info/Enemy_Portrait.texture = npc_data.portrait
 	$Player_Info/VBoxContainer/Player_Name.text = "Du"
@@ -131,6 +132,7 @@ func _start_player_turn():
 	round_active = true
 	hand.allowed_to_interact = true
 	turn_label.text = "Du bist dran"
+	hand.set_all_cards_interactable(true)
 
 func _start_npc_turn():
 	current_turn = Turn.NPC
@@ -138,6 +140,7 @@ func _start_npc_turn():
 	current_defender = "player"
 	round_active = true
 	hand.allowed_to_interact = false
+	hand.set_all_cards_interactable(false)
 	turn_label.text = "Gegner denkt …"
 
 	await get_tree().create_timer(1.0).timeout
@@ -147,7 +150,7 @@ func _start_npc_turn():
 	attacker_decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != attacker_card_data.id)
 	enemy_hand.discard_card()
-	card_display.add_card(attacker_card_data)
+	card_display.add_card(attacker_card_data, true)
 
 	npc_decision_label.text = "Ich sage, meine Karte ist " + attacker_decision + "."
 	npc_decision_label.show()
@@ -158,6 +161,7 @@ func _start_npc_turn():
 func request_player_response():
 	turn_label.text = "Dein Zug: Reagiere!"
 	hand.allowed_to_interact = true
+	hand.set_all_cards_interactable(true)
 
 func respond_npc():
 	await get_tree().create_timer(1.0).timeout
@@ -166,7 +170,7 @@ func respond_npc():
 	var decision = result["decision"]
 	npc_hand = npc_hand.filter(func(c): return c.id != defender_card_data.id)
 	enemy_hand.discard_card()
-	card_display.add_card(defender_card_data)
+	card_display.add_card(defender_card_data, true)
 
 	await get_tree().create_timer(1.5).timeout
 	resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
@@ -177,12 +181,10 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 		attacker_decision = decision
 		if current_defender == "npc":
 			hand.remove_card_by_id(card_data.id)
-			card_display.add_card(card_data)
 			respond_npc()
 	else:
 		defender_card_data = card_data
 		hand.remove_card_by_id(card_data.id)
-		card_display.add_card(card_data)
 		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
 func resolve_round(card1: CardData, card2: CardData, decision1: String, decision2: String):
@@ -292,6 +294,7 @@ func _on_higher_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
+		hand.set_all_cards_interactable(false)
 		evaluate_round("player", selected_popup_card, "higher")
 		npc_decision_label.hide()
 
@@ -299,5 +302,6 @@ func _on_lower_pressed() -> void:
 	if selected_popup_card:
 		popup.hide()
 		hand.allowed_to_interact = false
+		hand.set_all_cards_interactable(false)
 		evaluate_round("player", selected_popup_card, "lower")
 		npc_decision_label.hide()

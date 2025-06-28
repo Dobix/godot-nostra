@@ -13,7 +13,8 @@ var selected_card: Card = null
 @export var y_max := -15
 
 @export var card_id: int = -1
-@export var on_card_dbl_click: Callable
+@export var on_card_played: Callable
+
 
 @export var allowed_to_interact := false
 
@@ -21,11 +22,16 @@ func draw_card(card_data: CardData) -> void:
 	var new_card = CARD.instantiate()
 	new_card.card_data = card_data
 	new_card.image = load(card_data.image_path)
+	new_card.card_display_ref = $"../Card_Display"
+	new_card.dragging_allowed = allowed_to_interact
 	add_child(new_card)
 	new_card.connect("card_selected", Callable(self, "_on_card_selected"))
 	_update_cards()
 
-	
+func set_all_cards_interactable(active: bool):
+	for card in get_children():
+		card.dragging_allowed = active
+
 func discard_card() -> void:
 	if get_child_count() < 1:
 		return
@@ -40,18 +46,13 @@ func _on_card_selected(card: Card) -> void:
 		print("Nicht dein Zug!")
 		return
 
-	if selected_card and selected_card != card:
-		selected_card.selected = false
-		selected_card.border.visible = false
+	allowed_to_interact = false
+	set_all_cards_interactable(false)
 
-	if selected_card == card:
-		if on_card_dbl_click.is_valid():
-			on_card_dbl_click.call(card.card_data)
-	else:
-		card.selected = true
-		card.border.visible = true
-		selected_card = card
-		print("Karte ausgewählt mit ID:", card.card_data.id)
+	print("Karte ausgewählt mit ID:", card.card_data.id)
+	if on_card_played.is_valid():
+		on_card_played.call(card.card_data)
+
 
 
 func _update_cards() -> void:
