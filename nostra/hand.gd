@@ -1,7 +1,7 @@
 class_name Hand
 extends ColorRect
 
-const CARD = preload("res://nostra/card.tscn")
+const CARD = preload("res://nostra/card/card.tscn")
 var selected_card: Card = null
 
 @export var hand_curve: Curve
@@ -87,3 +87,12 @@ func _update_cards() -> void:
 		
 		# Dynamische Größe setzen
 		card.set_size(card_size)
+
+func remove_card_by_id(card_id: int) -> void:
+	for card in get_children():
+		if card.card_data != null and card.card_data.id == card_id:
+			card.reparent(get_tree().root)
+			card.queue_free()
+			await get_tree().process_frame
+			_update_cards()
+			break

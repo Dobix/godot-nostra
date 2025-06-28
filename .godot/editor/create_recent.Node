@@ -1,3 +1,4 @@
+Panel
 HBoxContainer
 Button
 Timer
@@ -10,5 +11,4 @@ VBoxContainer
 CenterContainer
 AnimatedSprite2D
 Node2D
-Panel
 PanelContainer

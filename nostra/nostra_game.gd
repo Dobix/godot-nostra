@@ -13,7 +13,7 @@ const dice_game = preload("res://nostra/dice_game.tscn")
 @onready var turn_label: Label = $Turn_label
 @onready var npc_decision_label: Label = $npc_decision_label
 @onready var round_result_label: Label = $round_result_label
-@onready var card_display: HBoxContainer = $Card_Display
+@onready var card_display: Panel = $Card_Display
 
 enum Turn { PLAYER, NPC }
 var current_turn: Turn
@@ -176,12 +176,12 @@ func evaluate_round(player: String, card_data: CardData, decision: String):
 		attacker_card_data = card_data
 		attacker_decision = decision
 		if current_defender == "npc":
-			remove_card_from_player_hand(card_data.id)
+			hand.remove_card_by_id(card_data.id)
 			card_display.add_card(card_data)
 			respond_npc()
 	else:
 		defender_card_data = card_data
-		remove_card_from_player_hand(card_data.id)
+		hand.remove_card_by_id(card_data.id)
 		card_display.add_card(card_data)
 		resolve_round(attacker_card_data, defender_card_data, attacker_decision, decision)
 
@@ -275,16 +275,6 @@ func next_turn():
 			_start_npc_turn()
 		Turn.NPC:
 			_start_player_turn()
-
-func remove_card_from_player_hand(card_id: int):
-	for card in hand.get_children():
-		if card.card_data != null and card.card_data.id == card_id:
-			player_hand = player_hand.filter(func(c): return c.id != card_id)
-			card.reparent(get_tree().root)
-			card.queue_free()
-			await get_tree().process_frame
-			hand._update_cards()
-			break
 
 func draw_cards_if_possible():
 	if not player_deck.is_empty():

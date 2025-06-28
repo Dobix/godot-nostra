@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_t35kn")
-defeated_npc_ids = Array[String]([])
+defeated_enemy_ids = Array[String]([])
 metadata/_custom_type_script = "uid://ce5ncp8x0pt53"

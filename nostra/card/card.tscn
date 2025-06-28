@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cknb61wfrkfuh"]
 
-[ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://nostra/card.gd" id="1_2cfb2"]
+[ext_resource type="Script" uid="uid://bgbqkkittmgom" path="res://nostra/card/card.gd" id="1_2cfb2"]
 [ext_resource type="Texture2D" uid="uid://drmn0pjiav1g4" path="res://assets/nostra/cards/01-blue.jpg" id="1_ovagr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2cfb2"]

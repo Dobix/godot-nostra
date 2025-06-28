@@ -1,7 +1,7 @@
 class_name Enemy_Hand
 extends ColorRect
 
-const CARD = preload("res://nostra/card.tscn")
+const CARD = preload("res://nostra/card/card.tscn")
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
 

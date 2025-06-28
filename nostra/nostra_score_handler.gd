@@ -33,8 +33,9 @@ func get_current_scores(player_discard: Array[CardData], npc_discard: Array[Card
 	}
 
 func get_needed_scores(win_mulitplier: float, deck_value_sum: int) -> Dictionary:
+	print(deck_value_sum)
 	player_needed_score = (deck_value_sum * win_mulitplier)
-	npc_needed_score = (deck_value_sum * win_mulitplier - deck_value_sum)
+	npc_needed_score = (deck_value_sum * 2 - player_needed_score )
 	return {
 		"player": player_needed_score,
 		"npc": npc_needed_score

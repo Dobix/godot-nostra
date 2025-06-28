@@ -7,6 +7,7 @@ extends Panel
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var border: ColorRect = $Border
 
+var drag_start_position := Vector2.ZERO
 var card_data: CardData = null
 var selected = false
 
@@ -31,6 +32,17 @@ func _on_mouse_exited() -> void:
 	if hover_enabled:
 		anim.play("hover_out")
 
-func _on_gui_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("left_click"):
-		emit_signal("card_selected", self)
+#func _on_gui_input(_event: InputEvent) -> void:
+	#if Input.is_action_just_pressed("left_click"):
+		#emit_signal("card_selected", self)
+		
+func _get_drag_data(_pos: Vector2) -> Variant:
+	var drag_preview = make_drag_preview()
+	set_drag_preview(drag_preview)
+	return self  # <== Das wird zur Drop-Ziel-Komponente gesendet
+
+func make_drag_preview() -> Control:
+	var preview := duplicate()
+	preview.modulate = Color(1, 1, 1, 0.6)
+	preview.scale = Vector2(0.8, 0.8)
+	return preview
