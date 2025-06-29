@@ -27,6 +27,7 @@ var player_hand: Array[CardData] = []
 var npc_hand: Array[CardData] = []
 
 var selected_popup_card: CardData = null
+var selected_popup_card_node: Card = null
 
 var current_attacker: String
 var current_defender: String
@@ -89,9 +90,11 @@ func update_score_labels():
 	$Player_Info/VBoxContainer/Player_Score.text = str(current_scores.player) + "/" + str(needed_scores.player)
 	$Enemy_Info/VBoxContainer/Enemy_Score.text = str(current_scores.npc) + "/" + str(needed_scores.npc)
 
-func show_card_popup(card_data: CardData):
-	selected_popup_card = card_data
+func show_card_popup(card: Card):
+	selected_popup_card = card.card_data
+	selected_popup_card_node = card
 	popup.popup_centered()
+
 
 func _on_round_start_dice_finished(result: Variant, dice_node: Node) -> void:
 	dice_node.queue_free()
@@ -295,6 +298,11 @@ func _on_higher_pressed() -> void:
 		popup.hide()
 		hand.allowed_to_interact = false
 		hand.set_all_cards_interactable(false)
+		
+		if selected_popup_card_node:
+			selected_popup_card_node.queue_free()
+			selected_popup_card_node = null
+			
 		card_display.add_card(selected_popup_card, false)
 		evaluate_round("player", selected_popup_card, "higher")
 		npc_decision_label.hide()
@@ -304,6 +312,11 @@ func _on_lower_pressed() -> void:
 		popup.hide()
 		hand.allowed_to_interact = false
 		hand.set_all_cards_interactable(false)
+		
+		if selected_popup_card_node:
+			selected_popup_card_node.queue_free()
+			selected_popup_card_node = null
+			
 		card_display.add_card(selected_popup_card, false)
 		evaluate_round("player", selected_popup_card, "lower")
 		npc_decision_label.hide()

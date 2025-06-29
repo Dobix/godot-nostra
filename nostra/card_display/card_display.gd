@@ -18,9 +18,6 @@ func add_card(card_data: CardData, is_enemy: bool = false):
 
 	displayed_cards.append(card)
 
-	print(is_enemy)
-
-
 func insert_card(card: Card, is_enemy: bool) -> void:
 	var slot = $Card_Display_grid/Enemy_Slot if is_enemy else $Card_Display_grid/Player_Slot
 

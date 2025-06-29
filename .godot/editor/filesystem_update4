@@ -10,3 +10,4 @@ res://npc/npc_enemy.tscn
 res://nostra/card_display/card_display.tscn
 res://nostra/card/card.tscn
 res://nostra/nostra_game.gd
+res://nostra/hand.gd

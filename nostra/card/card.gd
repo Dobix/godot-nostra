@@ -58,7 +58,21 @@ func drag_logic(delta: float) -> void:
 
 				if card_display_rect.has_point(mouse_pos):
 					print("Karte wurde korrekt gedroppt")
+					var target_slot = card_display_ref.get_node("Card_Display_grid/Player_Slot")
+					reparent(target_slot)
+					await get_tree().process_frame 
+					var target_pos = target_slot.size / 2 - size / 2
+					var tween = get_tree().create_tween()
+					tween.tween_property(self, "position", target_pos, 0.2)
+					rotation = 0
+					hover_enabled = false
+					mouse_filter = Control.MOUSE_FILTER_IGNORE
 					emit_signal("card_selected", self)
+
+					# Nur einmal zur Sicherheit, falls noch nicht hinzugefügt
+					if not card_display_ref.displayed_cards.has(self):
+						card_display_ref.displayed_cards.append(self)
+
 				else:
 					print("Zurücksnappen")
 					var tween := get_tree().create_tween()

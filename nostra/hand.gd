@@ -50,9 +50,9 @@ func _on_card_selected(card: Card) -> void:
 	set_all_cards_interactable(false)
 
 	print("Karte ausgewählt mit ID:", card.card_data.id)
-	if on_card_played.is_valid():
-		on_card_played.call(card.card_data)
 
+	if on_card_played.is_valid():
+		on_card_played.call(card)
 
 
 func _update_cards() -> void:
@@ -88,6 +88,7 @@ func _update_cards() -> void:
 		
 		# Dynamische Größe setzen
 		card.set_size(card_size)
+
 
 func remove_card_by_id(card_id: int) -> void:
 	for card in get_children():
