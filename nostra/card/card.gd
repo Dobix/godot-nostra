@@ -53,20 +53,11 @@ func drag_logic(delta: float) -> void:
 				if card_display_ref == null:
 					print("Card_Display Referenz fehlt!")
 					return
-
-				# Prüfe, ob Maus über Card_Display liegt
+					
 				var card_display_rect := Rect2(card_display_ref.global_position, card_display_ref.size)
 
 				if card_display_rect.has_point(mouse_pos):
 					print("Karte wurde korrekt gedroppt")
-
-					# In Player_Slot verschieben
-					var player_slot := card_display_ref.get_node("Card_Display_grid/Player_Slot")
-					reparent(player_slot)
-					position = player_slot.size / 2 - size / 2
-					rotation = 0
-					hover_enabled = false
-					mouse_filter = Control.MOUSE_FILTER_IGNORE
 					emit_signal("card_selected", self)
 				else:
 					print("Zurücksnappen")

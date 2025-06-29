@@ -13,17 +13,23 @@ func add_card(card_data: CardData, is_enemy: bool = false):
 	card.image = BACK_IMAGE
 	card.hover_enabled = false
 	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if is_enemy:
-		var slot = $Card_Display_grid/Enemy_Slot
-		slot.add_child(card)
-		await get_tree().process_frame
-		card.position = slot.size / 2 - card.size / 2
-		print("added enemy card")
-	else:
-		print("added player card")
+
+	insert_card(card, is_enemy)
 
 	displayed_cards.append(card)
 
+	print(is_enemy)
+
+
+func insert_card(card: Card, is_enemy: bool) -> void:
+	var slot = $Card_Display_grid/Enemy_Slot if is_enemy else $Card_Display_grid/Player_Slot
+
+	slot.add_child(card)
+	await get_tree().process_frame
+	card.position = slot.size / 2 - card.size / 2
+	card.rotation = 0
+	card.hover_enabled = not is_enemy
+	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func reveal_cards():
 	for card in displayed_cards:

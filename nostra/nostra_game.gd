@@ -295,6 +295,7 @@ func _on_higher_pressed() -> void:
 		popup.hide()
 		hand.allowed_to_interact = false
 		hand.set_all_cards_interactable(false)
+		card_display.add_card(selected_popup_card, false)
 		evaluate_round("player", selected_popup_card, "higher")
 		npc_decision_label.hide()
 
@@ -303,5 +304,6 @@ func _on_lower_pressed() -> void:
 		popup.hide()
 		hand.allowed_to_interact = false
 		hand.set_all_cards_interactable(false)
+		card_display.add_card(selected_popup_card, false)
 		evaluate_round("player", selected_popup_card, "lower")
 		npc_decision_label.hide()
