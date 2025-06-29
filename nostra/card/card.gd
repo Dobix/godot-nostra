@@ -69,10 +69,6 @@ func drag_logic(delta: float) -> void:
 					mouse_filter = Control.MOUSE_FILTER_IGNORE
 					emit_signal("card_selected", self)
 
-					# Nur einmal zur Sicherheit, falls noch nicht hinzugefügt
-					if not card_display_ref.displayed_cards.has(self):
-						card_display_ref.displayed_cards.append(self)
-
 				else:
 					print("Zurücksnappen")
 					var tween := get_tree().create_tween()

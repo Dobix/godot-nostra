@@ -30,11 +30,13 @@ func insert_card(card: Card, is_enemy: bool) -> void:
 
 func reveal_cards():
 	for card in displayed_cards:
+		print(card)
 		card.image = load(card.card_data.image_path)
 		card.update_image()
 
 func clear_display():
 	for card in displayed_cards:
+		print(card)
 		card.queue_free()
 	displayed_cards.clear()
 

@@ -2,7 +2,6 @@ res://nostra/nostra_game.tscn
 res://Player/player_stats.gd
 res://shader/card.gdshader
 res://nostra/card_display/card_display.gd
-res://nostra/card/card.gd
 res://main.tscn
 res://npc/npc_base.tscn
 res://overworld/overworld.tscn
@@ -10,4 +9,4 @@ res://npc/npc_enemy.tscn
 res://nostra/card_display/card_display.tscn
 res://nostra/card/card.tscn
 res://nostra/nostra_game.gd
-res://nostra/hand.gd
+res://nostra/card/card.gd
