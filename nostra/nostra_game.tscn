@@ -8,15 +8,6 @@
 [ext_resource type="Script" uid="uid://b6plgix2chsi8" path="res://nostra/hand.gd" id="4_a0bb1"]
 [ext_resource type="Texture2D" uid="uid://dpq8af8ujieka" path="res://assets/nostra/placeholder_enemy.png" id="5_gk84w"]
 
-[sub_resource type="Curve" id="Curve_65yto"]
-_data = [Vector2(0, 1), 0.0, -4.30596, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 4.47323, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Curve" id="Curve_d8jua"]
-_limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0.0106383, 1), 0.0, -6.42157, 0, 0, Vector2(0.5, 1.49012e-08), 0.0, 0.0, 0, 0, Vector2(1, -1), -6.33708, 0.0, 0, 0]
-point_count = 3
-
 [sub_resource type="Curve" id="Curve_a0bb1"]
 _data = [Vector2(0, 0), 0.0, 6.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
 point_count = 3
@@ -24,6 +15,15 @@ point_count = 3
 [sub_resource type="Curve" id="Curve_gk84w"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
 _data = [Vector2(0, -1), 0.0, 6.0, 0, 0, Vector2(0.5, 1.49012e-08), 0.0, 0.0, 0, 0, Vector2(1, 1), 6.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_65yto"]
+_data = [Vector2(0, 1), 0.0, -4.30596, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 4.47323, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_d8jua"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0.0106383, 1), 0.0, -6.42157, 0, 0, Vector2(0.5, 1.49012e-08), 0.0, 0.0, 0, 0, Vector2(1, -1), -6.33708, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65yto"]
@@ -46,6 +46,25 @@ grow_vertical = 2
 color = Color(0.0784314, 0.0588235, 0.0117647, 1)
 
 [node name="Card_Display" parent="." instance=ExtResource("2_onn52")]
+
+[node name="Hand" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(600, 300)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+color = Color(1, 1, 1, 0)
+script = ExtResource("4_a0bb1")
+hand_curve = SubResource("Curve_a0bb1")
+rotation_curve = SubResource("Curve_gk84w")
 
 [node name="Enemy_Info" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 300)
@@ -125,25 +144,6 @@ color = Color(1, 1, 1, 0)
 script = ExtResource("4_65yto")
 hand_curve = SubResource("Curve_65yto")
 rotation_curve = SubResource("Curve_d8jua")
-
-[node name="Hand" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(600, 300)
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -400.0
-offset_top = -300.0
-offset_right = 400.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 8
-color = Color(1, 1, 1, 0)
-script = ExtResource("4_a0bb1")
-hand_curve = SubResource("Curve_a0bb1")
-rotation_curve = SubResource("Curve_gk84w")
 
 [node name="Deck_Pile" type="Panel" parent="."]
 custom_minimum_size = Vector2(60, 90)

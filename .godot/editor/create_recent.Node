@@ -1,3 +1,4 @@
+Control
 Panel
 Sprite2D
 HBoxContainer
@@ -6,7 +7,6 @@ Timer
 Label
 AnimationPlayer
 AnimationTree
-Control
 VBoxContainer
 CenterContainer
 AnimatedSprite2D

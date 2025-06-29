@@ -73,7 +73,6 @@ pivot_offset = Vector2(65, 180)
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ar11a")
 script = ExtResource("1_2cfb2")
-hover_enabled = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

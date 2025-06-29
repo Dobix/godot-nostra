@@ -30,20 +30,13 @@ func insert_card(card: Card, is_enemy: bool) -> void:
 
 func reveal_cards():
 	for card in displayed_cards:
-		print(card)
 		card.image = load(card.card_data.image_path)
 		card.update_image()
 
 func clear_display():
 	for card in displayed_cards:
-		print(card)
 		card.queue_free()
 	displayed_cards.clear()
 
-# === DRAG & DROP ===
-
 func _can_drop_data(_pos: Vector2, data: Variant) -> bool:
 	return data is Card
-
-func _drop_data(_pos: Vector2, data: Variant) -> void:
-	print("Karte gedroppt!")

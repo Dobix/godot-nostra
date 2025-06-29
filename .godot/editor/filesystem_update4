@@ -10,3 +10,5 @@ res://nostra/card_display/card_display.tscn
 res://nostra/card/card.tscn
 res://nostra/nostra_game.gd
 res://nostra/card/card.gd
+res://nostra/hand.gd
+res://Game_Manager/game_manager.gd

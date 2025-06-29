@@ -12,7 +12,6 @@ var selected_card: Card = null
 @export var y_min := 0
 @export var y_max := -15
 
-@export var card_id: int = -1
 @export var on_card_played: Callable
 
 
@@ -20,6 +19,7 @@ var selected_card: Card = null
 
 func draw_card(card_data: CardData) -> void:
 	var new_card = CARD.instantiate()
+	new_card.hand_ref = self
 	new_card.card_data = card_data
 	new_card.image = load(card_data.image_path)
 	new_card.card_display_ref = $"../Card_Display"
@@ -82,11 +82,10 @@ func _update_cards() -> void:
 		# Positionieren
 		var final_x: float = offset + card_size.x * i + final_x_sep * i
 		var final_y: float = y_min + y_max * y_multiplier
-		
-		card.position = Vector2(final_x, final_y)
+		var tween = get_tree().create_tween()
+		tween.tween_property(card, "position", Vector2(final_x, final_y), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(card, "rotation_degrees", max_rotation_degrees * rot_multiplier, 0.2)
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier
-		
-		# Dynamische Größe setzen
 		card.set_size(card_size)
 
 
